@@ -1,1 +1,10 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Мой P2P сайт</title>
+</head>
+<body>
+  <h1>Добро пожаловать на P2P платформу!</h1>
+  <p>Здесь будет ваш контент.</p>
+</body>
+</html>
