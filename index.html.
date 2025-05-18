@@ -1,155 +1,84 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Modern P2P Exchange</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кабинет Администратора</title>
   <style>
-    * {
+    body {
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f4f6f9;
-      padding: 20px;
-      color: #2d3436;
+      background-color: #f5f5f5;
     }
     header {
-      background-color: #0984e3;
+      background-color: #4CAF50;
+      padding: 10px 20px;
       color: white;
-      padding: 15px;
       text-align: center;
-      border-radius: 8px;
-      margin-bottom: 20px;
     }
-    header h1 {
-      font-size: 24px;
-    }
-    .exchange-section {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .exchange-form {
-      background-color: white;
+    .container {
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .balance {
+      font-size: 24px;
       margin-bottom: 20px;
     }
-    .exchange-form label {
-      display: block;
-      margin: 5px 0;
-      font-weight: 600;
-    }
-    .exchange-form input, .exchange-form select {
+    table {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #dfe6e9;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    .exchange-form button {
-      background-color: #0984e3;
-      color: white;
-      border: none;
-      padding: 10px;
-      width: 100%;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .exchange-form button:hover {
-      background-color: #0871c2;
-    }
-    .filter-section {
+      border-collapse: collapse;
       margin-bottom: 20px;
-      text-align: center;
     }
-    .filter-section button {
-      background-color: #dfe6e9;
-      border: none;
-      padding: 8px 15px;
-      margin: 0 5px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 14px;
+    table, th, td {
+      border: 1px solid #ddd;
     }
-    .filter-section button.active {
-      background-color: #0984e3;
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
       color: white;
-    }
-    .exchange-list {
-      display: grid;
-      gap: 15px;
-    }
-    .exchange-card {
-      background-color: white;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .exchange-card .info {
-      flex: 1;
-    }
-    .exchange-card .info p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
-    .exchange-card .info .type {
-      font-weight: 600;
-      color: #0984e3;
-    }
-    .exchange-card button {
-      background-color: #e63946;
-      color: white;
-      border: none;
-      padding: 8px 12px;
+      text-decoration: none;
       border-radius: 5px;
-      cursor: pointer;
     }
-    .exchange-card button:hover {
-      background-color: #d62828;
-    }
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      .exchange-form {
-        padding: 15px;
-      }
-      .exchange-card {
-        flex-direction: column;
-        text-align: left;
-      }
-      .exchange-card button {
-        margin-top: 10px;
-        width: 100%;
-      }
+    .button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Modern P2P Exchange</h1>
+    <h1>Кабинет Администратора</h1>
   </header>
+  <div class="container">
+    <p class="balance">Ваш текущий баланс: <strong>1234.56 USDT</strong></p>
 
-  <div class="exchange-section">
-    <div class="exchange-form">
-      <form id="exchangeForm">
-        <label>Валюта:</label>
-        <input type="text" id="currency" placeholder="USDT, BTC..." required>
-        <label>Сумма:</label>
-        <input type="number" id="amount" placeholder="Введите сумму" required>
-        <label>Способ оплаты:</label>
-        <input type="text" id="method" placeholder="Банк, QIWI..." required>
-        <label>Тип:</label>
-        <select id="type">
-          <option value="Покупка">Покупка</option>
-          <option value="Продажа">Продажа</option>
-        </select>
-        <label>Контакт:</label>
-        <input type="text" id="contact" placeholder="Telegram
+    <h2>История сделок</h2>
+    <table>
+      <tr>
+        <th>Дата</th>
+        <th>Сумма сделки</th>
+        <th>Комиссия (USDT)</th>
+      </tr>
+      <tr>
+        <td>2025-05-18</td>
+        <td>1000 USDT</td>
+        <td>5.00 USDT</td>
+      </tr>
+      <tr>
+        <td>2025-05-17</td>
+        <td>2000 USDT</td>
+        <td>10.00 USDT</td>
+      </tr>
+    </table>
+
+    <a href="#" class="button">Вывести средства</a>
+  </div>
+</body>
+</html>
