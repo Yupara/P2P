@@ -1,27 +1,182 @@
 <html>
 <head>
-  <title>Тестовый сайт</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 20px;
-      background-color: #f0f0f0;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
     }
-    h1 {
+    h2, h3 {
       color: #333;
     }
-    img {
-      max-width: 100%;
-      height: auto;
-      border: 2px solid #333;
-      border-radius: 10px;
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1a1a1a;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+    }
+    .logo {
+      flex: 1;
+    }
+    nav a {
+      color: #f0b90b;
+      text-decoration: none;
+      margin-right: 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #ffffff;
+    }
+    .form-container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .form-container input, .form-container select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .form-container button {
+      background-color: #f0b90b;
+      color: #1a1a1a;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .form-container button:hover {
+      background-color: #d4a017;
+    }
+    .order-list {
+      background-color: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .order-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .order-item:last-child {
+      border-bottom: none;
+    }
+    .order-item button {
+      background-color: #ff4d4f;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      float: right;
+    }
+    .order-item button:hover {
+      background-color: #d9363e;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .form-container {
+        padding: 15px;
+      }
+      nav a {
+        display: block;
+        margin: 5px 0;
+      }
+      .form-container input, .form-container select {
+        font-size: 14px;
+      }
+      .form-container button {
+        width: 100%;
+        padding: 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Это тестовый сайт!</h1>
-  <p>Если вы видите эту картинку, сайт обновился:</p>
-  <img src="https://via.placeholder.com/400x200.png?text=Test+Image" alt="Тестовая картинка">
+  <header>
+    <div class="logo">
+      <h1 style="color: #f0b90b; display: inline;">P2P Exchange</h1>
+    </div>
+    <nav>
+      <a href="#main">Главная</a>
+    </nav>
+  </header>
+
+  <div id="main">
+    <h2>P2P Обменник (Binance-style)</h2>
+    <div class="form-container">
+      <form id="exchangeForm">
+        Валюта: <input type="text" id="currency" placeholder="USDT, BTC..." required><br>
+        Сумма: <input type="number" id="amount" required><br>
+        Способ: <input type="text" id="method" placeholder="QIWI, карта..." required><br>
+        Тип: <select id="type">
+          <option value="Покупка">Покупка</option>
+          <option value="Продажа">Продажа</option>
+        </select><br>
+        Контакт (email): <input type="email" id="contact" placeholder="example@mail.com" required><br>
+        <button onclick="addOrder(event)">Добавить заявку</button>
+      </form>
+    </div>
+
+    <div class="order-list" id="orders">
+      <h3>Активные заявки:</h3>
+    </div>
+  </div>
+
+  <script>
+    let orders = [];
+
+    function addOrder(event) {
+      event.preventDefault();
+      const currency = document.getElementById("currency").value;
+      const amount = document.getElementById("amount").value;
+      const method = document.getElementById("method").value;
+      const type = document.getElementById("type").value;
+      const contact = document.getElementById("contact").value;
+
+      if (currency && amount && method && contact) {
+        const order = {
+          id: Date.now(),
+          text: `${type}: ${amount} ${currency} через ${method} (Контакт: ${contact})`
+        };
+        orders.push(order);
+        updateOrders();
+        document.getElementById("exchangeForm").reset();
+      } else {
+        alert("Заполните все поля!");
+      }
+    }
+
+    function updateOrders() {
+      const ordersDiv = document.getElementById("orders");
+      ordersDiv.innerHTML = "<h3>Активные заявки:</h3>";
+      orders.forEach((order) => {
+        const div = document.createElement("div");
+        div.className = "order-item";
+        div.innerHTML = `
+          ${order.text}
+          <button onclick="removeOrder(${order.id})">Удалить</button>
+        `;
+        ordersDiv.appendChild(div);
+      });
+    }
+
+    function removeOrder(id) {
+      orders = orders.filter(order => order.id !== id);
+      updateOrders();
+    }
+  </script>
 </body>
 </html>
