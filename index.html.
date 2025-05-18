@@ -1,144 +1,119 @@
 <html>
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <title>P2P Trade Platform</title>
   <style>
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Verdana', sans-serif;
       margin: 0;
       padding: 20px;
-      background-color: #f5f5f5;
-    }
-    h2, h3 {
+      background-color: #e9ecef;
       color: #333;
     }
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #1a1a1a;
-      padding: 10px 20px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 10px;
+      text-align: center;
       margin-bottom: 20px;
     }
-    .logo {
-      flex: 1;
+    header h1 {
+      margin: 0;
+      font-size: 24px;
     }
-    nav a {
-      color: #f0b90b;
-      text-decoration: none;
-      margin-right: 15px;
-      font-weight: bold;
-    }
-    nav a:hover {
-      color: #ffffff;
-    }
-    .form-container {
-      background-color: #ffffff;
+    .trade-container {
+      background-color: white;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
     }
-    .form-container input, .form-container select {
+    .trade-form input, .trade-form select, .trade-form button {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
-      border: 1px solid #ddd;
+      border: 1px solid #ced4da;
       border-radius: 4px;
       box-sizing: border-box;
     }
-    .form-container button {
-      background-color: #f0b90b;
-      color: #1a1a1a;
+    .trade-form button {
+      background-color: #27ae60;
+      color: white;
       border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
     }
-    .form-container button:hover {
-      background-color: #d4a017;
+    .trade-form button:hover {
+      background-color: #219653;
     }
-    .order-list {
-      background-color: #ffffff;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    .trade-list {
+      margin-top: 20px;
     }
-    .order-item {
+    .trade-item {
       padding: 10px;
       border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .order-item:last-child {
+    .trade-item:last-child {
       border-bottom: none;
     }
-    .order-item button {
-      background-color: #ff4d4f;
+    .trade-item button {
+      background-color: #e74c3c;
       color: white;
       border: none;
       padding: 5px 10px;
       border-radius: 4px;
       cursor: pointer;
-      float: right;
     }
-    .order-item button:hover {
-      background-color: #d9363e;
+    .trade-item button:hover {
+      background-color: #c0392b;
     }
     @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      .form-container {
+      .trade-container {
         padding: 15px;
       }
-      nav a {
-        display: block;
-        margin: 5px 0;
+      .trade-item {
+        flex-direction: column;
+        text-align: left;
       }
-      .form-container input, .form-container select {
-        font-size: 14px;
-      }
-      .form-container button {
-        width: 100%;
-        padding: 12px;
+      .trade-item button {
+        margin-top: 5px;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">
-      <h1 style="color: #f0b90b; display: inline;">P2P Exchange</h1>
-    </div>
-    <nav>
-      <a href="#main">Главная</a>
-    </nav>
+    <h1>P2P Trade Platform</h1>
   </header>
 
-  <div id="main">
-    <h2>P2P Обменник (Binance-style)</h2>
-    <div class="form-container">
-      <form id="exchangeForm">
+  <div class="trade-container">
+    <h2>P2P Обменник</h2>
+    <div class="trade-form">
+      <form id="tradeForm">
         Валюта: <input type="text" id="currency" placeholder="USDT, BTC..." required><br>
-        Сумма: <input type="number" id="amount" required><br>
-        Способ: <input type="text" id="method" placeholder="QIWI, карта..." required><br>
+        Сумма: <input type="number" id="amount" placeholder="Введите сумму" required><br>
+        Способ оплаты: <input type="text" id="method" placeholder="Банк, QIWI..." required><br>
         Тип: <select id="type">
-          <option value="Покупка">Покупка</option>
-          <option value="Продажа">Продажа</option>
+          <option value="Купить">Купить</option>
+          <option value="Продать">Продать</option>
         </select><br>
-        Контакт (email): <input type="email" id="contact" placeholder="example@mail.com" required><br>
-        <button onclick="addOrder(event)">Добавить заявку</button>
+        Контакт: <input type="text" id="contact" placeholder="Telegram или email" required><br>
+        <button onclick="addTrade(event)">Добавить сделку</button>
       </form>
     </div>
 
-    <div class="order-list" id="orders">
-      <h3>Активные заявки:</h3>
+    <div class="trade-list" id="tradeList">
+      <h3>Активные сделки:</h3>
     </div>
   </div>
 
   <script>
-    let orders = [];
+    let trades = [];
 
-    function addOrder(event) {
+    function addTrade(event) {
       event.preventDefault();
       const currency = document.getElementById("currency").value;
       const amount = document.getElementById("amount").value;
@@ -147,35 +122,35 @@
       const contact = document.getElementById("contact").value;
 
       if (currency && amount && method && contact) {
-        const order = {
+        const trade = {
           id: Date.now(),
           text: `${type}: ${amount} ${currency} через ${method} (Контакт: ${contact})`
         };
-        orders.push(order);
-        updateOrders();
-        document.getElementById("exchangeForm").reset();
+        trades.push(trade);
+        updateTradeList();
+        document.getElementById("tradeForm").reset();
       } else {
         alert("Заполните все поля!");
       }
     }
 
-    function updateOrders() {
-      const ordersDiv = document.getElementById("orders");
-      ordersDiv.innerHTML = "<h3>Активные заявки:</h3>";
-      orders.forEach((order) => {
+    function updateTradeList() {
+      const tradeList = document.getElementById("tradeList");
+      tradeList.innerHTML = "<h3>Активные сделки:</h3>";
+      trades.forEach((trade) => {
         const div = document.createElement("div");
-        div.className = "order-item";
+        div.className = "trade-item";
         div.innerHTML = `
-          ${order.text}
-          <button onclick="removeOrder(${order.id})">Удалить</button>
+          ${trade.text}
+          <button onclick="removeTrade(${trade.id})">Удалить</button>
         `;
-        ordersDiv.appendChild(div);
+        tradeList.appendChild(div);
       });
     }
 
-    function removeOrder(id) {
-      orders = orders.filter(order => order.id !== id);
-      updateOrders();
+    function removeTrade(id) {
+      trades = trades.filter(trade => trade.id !== id);
+      updateTradeList();
     }
   </script>
 </body>
