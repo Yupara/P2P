@@ -1,44 +1,27 @@
-<!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>P2P Обменник</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Тестовый сайт</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+      background-color: #f0f0f0;
+    }
+    h1 {
+      color: #333;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #333;
+      border-radius: 10px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>P2P Обмен</h1>
-    <p>Обменивай крипту между людьми. Безопасно. Быстро.</p>
-  </header>
-
-  <main>
-    <section class="order-list">
-      <h2>Доступные ордера</h2>
-      <div class="order">
-        <p><strong>Покупка USDT</strong> — 1.11 USD</p>
-        <button>Обменять</button>
-      </div>
-      <div class="order">
-        <p><strong>Продажа BTC</strong> — 68,000 USD</p>
-        <button>Обменять</button>
-      </div>
-    </section>
-
-    <section class="create-order">
-      <h2>Создать ордер</h2>
-      <form>
-        <input type="text" placeholder="Криптовалюта (например, USDT)">
-        <input type="text" placeholder="Цена">
-        <button type="submit">Создать</button>
-      </form>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 P2P Exchange</p>
-  </footer>
-
-  <script src="script.js"></script>
+  <h1>Это тестовый сайт!</h1>
+  <p>Если вы видите эту картинку, сайт обновился:</p>
+  <img src="https://via.placeholder.com/400x200.png?text=Test+Image" alt="Тестовая картинка">
 </body>
 </html>
