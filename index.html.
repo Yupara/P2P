@@ -1,157 +1,155 @@
 <html>
 <head>
-  <title>P2P Trade Platform</title>
+  <title>Modern P2P Exchange</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Verdana', sans-serif;
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f6f9;
       padding: 20px;
-      background-color: #e9ecef;
-      color: #333;
+      color: #2d3436;
     }
     header {
-      background-color: #2c3e50;
+      background-color: #0984e3;
       color: white;
-      padding: 10px;
+      padding: 15px;
       text-align: center;
+      border-radius: 8px;
       margin-bottom: 20px;
     }
     header h1 {
-      margin: 0;
       font-size: 24px;
     }
-    .trade-container {
+    .exchange-section {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .exchange-form {
       background-color: white;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
-      margin: 0 auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
     }
-    .trade-form input, .trade-form select, .trade-form button {
+    .exchange-form label {
+      display: block;
+      margin: 5px 0;
+      font-weight: 600;
+    }
+    .exchange-form input, .exchange-form select {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-      box-sizing: border-box;
+      margin-bottom: 10px;
+      border: 1px solid #dfe6e9;
+      border-radius: 5px;
+      font-size: 14px;
     }
-    .trade-form button {
-      background-color: #27ae60;
+    .exchange-form button {
+      background-color: #0984e3;
       color: white;
       border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .trade-form button:hover {
-      background-color: #219653;
-    }
-    .trade-list {
-      margin-top: 20px;
-    }
-    .trade-item {
       padding: 10px;
-      border-bottom: 1px solid #eee;
+      width: 100%;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .exchange-form button:hover {
+      background-color: #0871c2;
+    }
+    .filter-section {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .filter-section button {
+      background-color: #dfe6e9;
+      border: none;
+      padding: 8px 15px;
+      margin: 0 5px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .filter-section button.active {
+      background-color: #0984e3;
+      color: white;
+    }
+    .exchange-list {
+      display: grid;
+      gap: 15px;
+    }
+    .exchange-card {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .trade-item:last-child {
-      border-bottom: none;
+    .exchange-card .info {
+      flex: 1;
     }
-    .trade-item button {
-      background-color: #e74c3c;
+    .exchange-card .info p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .exchange-card .info .type {
+      font-weight: 600;
+      color: #0984e3;
+    }
+    .exchange-card button {
+      background-color: #e63946;
       color: white;
       border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
+      padding: 8px 12px;
+      border-radius: 5px;
       cursor: pointer;
     }
-    .trade-item button:hover {
-      background-color: #c0392b;
+    .exchange-card button:hover {
+      background-color: #d62828;
     }
     @media (max-width: 600px) {
-      .trade-container {
+      body {
+        padding: 10px;
+      }
+      .exchange-form {
         padding: 15px;
       }
-      .trade-item {
+      .exchange-card {
         flex-direction: column;
         text-align: left;
       }
-      .trade-item button {
-        margin-top: 5px;
+      .exchange-card button {
+        margin-top: 10px;
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>P2P Trade Platform</h1>
+    <h1>Modern P2P Exchange</h1>
   </header>
 
-  <div class="trade-container">
-    <h2>P2P Обменник</h2>
-    <div class="trade-form">
-      <form id="tradeForm">
-        Валюта: <input type="text" id="currency" placeholder="USDT, BTC..." required><br>
-        Сумма: <input type="number" id="amount" placeholder="Введите сумму" required><br>
-        Способ оплаты: <input type="text" id="method" placeholder="Банк, QIWI..." required><br>
-        Тип: <select id="type">
-          <option value="Купить">Купить</option>
-          <option value="Продать">Продать</option>
-        </select><br>
-        Контакт: <input type="text" id="contact" placeholder="Telegram или email" required><br>
-        <button onclick="addTrade(event)">Добавить сделку</button>
-      </form>
-    </div>
-
-    <div class="trade-list" id="tradeList">
-      <h3>Активные сделки:</h3>
-    </div>
-  </div>
-
-  <script>
-    let trades = [];
-
-    function addTrade(event) {
-      event.preventDefault();
-      const currency = document.getElementById("currency").value;
-      const amount = document.getElementById("amount").value;
-      const method = document.getElementById("method").value;
-      const type = document.getElementById("type").value;
-      const contact = document.getElementById("contact").value;
-
-      if (currency && amount && method && contact) {
-        const trade = {
-          id: Date.now(),
-          text: `${type}: ${amount} ${currency} через ${method} (Контакт: ${contact})`
-        };
-        trades.push(trade);
-        updateTradeList();
-        document.getElementById("tradeForm").reset();
-      } else {
-        alert("Заполните все поля!");
-      }
-    }
-
-    function updateTradeList() {
-      const tradeList = document.getElementById("tradeList");
-      tradeList.innerHTML = "<h3>Активные сделки:</h3>";
-      trades.forEach((trade) => {
-        const div = document.createElement("div");
-        div.className = "trade-item";
-        div.innerHTML = `
-          ${trade.text}
-          <button onclick="removeTrade(${trade.id})">Удалить</button>
-        `;
-        tradeList.appendChild(div);
-      });
-    }
-
-    function removeTrade(id) {
-      trades = trades.filter(trade => trade.id !== id);
-      updateTradeList();
-    }
-  </script>
-</body>
-</html>
+  <div class="exchange-section">
+    <div class="exchange-form">
+      <form id="exchangeForm">
+        <label>Валюта:</label>
+        <input type="text" id="currency" placeholder="USDT, BTC..." required>
+        <label>Сумма:</label>
+        <input type="number" id="amount" placeholder="Введите сумму" required>
+        <label>Способ оплаты:</label>
+        <input type="text" id="method" placeholder="Банк, QIWI..." required>
+        <label>Тип:</label>
+        <select id="type">
+          <option value="Покупка">Покупка</option>
+          <option value="Продажа">Продажа</option>
+        </select>
+        <label>Контакт:</label>
+        <input type="text" id="contact" placeholder="Telegram
