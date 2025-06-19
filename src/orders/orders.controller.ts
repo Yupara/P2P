@@ -119,3 +119,49 @@ export class OrdersController {
     return this.orders.find(o => o.id === Number(id));
   }
 }
+
+import { Controller, Get, Param, Body, Patch } from '@nestjs/common';
+
+@Controller('orders')
+export class OrdersController {
+  private orders = [
+    {
+      id: 1,
+      username: "Savak",
+      price: "70,96",
+      amount: "304,7685 USDT",
+      limits: "500 – 500 000 RUB",
+      payment: "SBP, кольнениe",
+      orders: 40,
+      percent: 10,
+      status: "online",
+      payData: {
+        bank: "Сбербанк",
+        fullName: "Иванов Иван",
+        card: "1234 5678 9012 3456",
+        buyer: "goldyan",
+        orderTime: "2024-01-23 20:25:14"
+      }
+    },
+    // ... другие ордера
+  ];
+
+  @Get()
+  findAll() {
+    return this.orders;
+  }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.orders.find(o => o.id === Number(id));
+  }
+
+  @Patch(':id/status')
+  updateStatus(@Param('id') id: string, @Body() body: { status: string }) {
+    const order = this.orders.find(o => o.id === Number(id));
+    if (order) {
+      order.status = body.status;
+      return { success: true, order };
+    }
+    return { success: false, message: 'Order not found' };
+  }
+}
