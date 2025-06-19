@@ -137,3 +137,29 @@ const [modalOrder, setModalOrder] = useState<Order|null>(null);
 // ...
 <OrderCard {...order} key={order.id} onClick={() => setModalOrder(order)} />
 <OrderModal order={modalOrder} onClose={() => setModalOrder(null)} />
+// ...импорт и хуки
+return (
+  <div className="p2p-app">
+    {/* ...шапка */}
+    <div style={{margin: "16px 0", display: "flex", gap: 16, alignItems: "center"}}>
+      {/* ...фильтры */}
+      <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+        <option value="date-desc">Сначала новые</option>
+        <option value="date-asc">Сначала старые</option>
+        <option value="price-asc">Цена ↑</option>
+        <option value="price-desc">Цена ↓</option>
+      </select>
+    </div>
+    <section className="orders">
+      {sortedOrders.length === 0 && <div>Нет ордеров по фильтру</div>}
+      {sortedOrders.map((order) => (
+        <OrderCard
+          {...order}
+          key={order.id}
+          onClick={() => setModalOrder(order)}
+        />
+      ))}
+    </section>
+    <OrderModal order={modalOrder} onClose={() => setModalOrder(null)} />
+  </div>
+);
