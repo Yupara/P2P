@@ -78,3 +78,16 @@ function OrderStatus({ status }: { status: Order["status"] }) {
   if (status === "offline") color = "grey";
   return <span className="order-status-dot" style={{ background: color }} />;
 }
+
+export interface Order {
+  id: number;
+  username: string;
+  price: string;
+  amount: string;
+  limits: string;
+  payment: string;
+  orders: number;
+  percent: number;
+  status: "online" | "offline" | "warning";
+  // ...
+}
