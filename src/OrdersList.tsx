@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { OrderCard, ordersMock } from "./OrderCard";
+import { OrderCard, Order } from "./OrderCard";
 import "./App.css";
 
 const TABS = ["Покупка", "Продажа"];
 
 export default function OrdersList() {
   const [tab, setTab] = useState(0);
+  const [orders, setOrders] = useState<Order[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("https://your-backend-api.com/orders") // замените на ваш реальный endpoint
+      .then(res => res.json())
+      .then(data => setOrders(data));
+  }, []);
 
   return (
     <div className="p2p-app">
@@ -37,11 +44,11 @@ export default function OrdersList() {
         <button>Узнать больше</button>
       </div>
       <section className="orders">
-        {ordersMock.map((order, idx) => (
+        {orders.map((order, idx) => (
           <OrderCard
             {...order}
             key={order.username + order.price}
-            onClick={() => navigate(`/order/${idx}`)}
+            onClick={() => navigate(`/order/${order.id}`)}
           />
         ))}
       </section>
