@@ -1,0 +1,32 @@
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { User } from '../users/user.entity';
+
+@Entity()
+export class Order {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @ManyToOne(() => User, (user) => user.id)
+  user: User;
+
+  @Column()
+  asset: string; // BTC, USDT, RUB, QIWI, etc.
+
+  @Column()
+  paymentSystem: string; // QIWI, Payeer, YooKassa, SWIFT, Stripe, etc.
+
+  @Column({ type: 'decimal', precision: 18, scale: 8 })
+  amount: number;
+
+  @Column({ type: 'decimal', precision: 18, scale: 8 })
+  price: number;
+
+  @Column()
+  type: string; // BUY / SELL
+
+  @Column({ default: true })
+  isActive: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+}
