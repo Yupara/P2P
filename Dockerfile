@@ -1,24 +1,17 @@
-FROM node:20-alpine AS builder
-
+# 1. Build stage
+FROM node:20-alpine as builder
 WORKDIR /app
-
 COPY package*.json ./
 RUN npm install
-
-# Копируем ВСЕ исходники и конфиги, включая tsconfig.json!
 COPY . .
-
 RUN npm run build
 
+# 2. Production stage
 FROM node:20-alpine
-
 WORKDIR /app
-
 COPY package*.json ./
 RUN npm install --omit=dev
-
 COPY --from=builder /app/dist ./dist
-
+COPY --from=builder /app/package*.json ./
 EXPOSE 4000
-
 CMD ["node", "dist/main.js"]
