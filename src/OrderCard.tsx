@@ -110,3 +110,37 @@ export interface Order {
     orderTime: string;
   };
 }
+import React from "react";
+
+export interface Order {
+  id: number;
+  username: string;
+  price: string;
+  amount: string;
+  limits: string;
+  payment: string;
+  orders: number;
+  percent: number;
+  status: string;
+  owner: string;
+  createdAt: string;
+  payData?: {
+    bank?: string;
+    fullName?: string;
+    card?: string;
+    buyer?: string;
+    orderTime?: string;
+  };
+}
+
+export function OrderCard(props: Order & { onClick: () => void }) {
+  return (
+    <div className="order-card" onClick={props.onClick} style={{border: "1px solid #444", margin: 8, padding: 12, borderRadius: 8}}>
+      <b>#{props.id} {props.price} RUB/USDT</b>
+      <div>{props.amount} | {props.limits} | {props.payment}</div>
+      <div>Статус: {props.status}</div>
+      <div>Пользователь: {props.username}</div>
+      {props.payData?.fullName && <div>ФИО: {props.payData.fullName}</div>}
+    </div>
+  );
+}
