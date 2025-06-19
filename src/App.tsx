@@ -6,6 +6,9 @@ import PaymentPage from "./PaymentPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import MyOrdersPage from "./MyOrdersPage";
+import CreateOrderPage from "./CreateOrderPage";
+import EditOrderPage from "./EditOrderPage";
+import PrivateRoute from "./PrivateRoute";
 
 export default function App() {
   return (
@@ -16,31 +19,16 @@ export default function App() {
         <Route path="/pay/:orderId" element={<PaymentPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/my-orders" element={<MyOrdersPage />} />
+        <Route path="/my-orders" element={
+          <PrivateRoute><MyOrdersPage /></PrivateRoute>
+        } />
+        <Route path="/create-order" element={
+          <PrivateRoute><CreateOrderPage /></PrivateRoute>
+        } />
+        <Route path="/edit-order/:orderId" element={
+          <PrivateRoute><EditOrderPage /></PrivateRoute>
+        } />
       </Routes>
     </Router>
   );
 }
-import CreateOrderPage from "./CreateOrderPage";
-// ...
-<Route path="/create-order" element={<CreateOrderPage />} />
-import EditOrderPage from "./EditOrderPage";
-// ...
-<Route
-  path="/edit-order/:orderId"
-  element={
-    <PrivateRoute>
-      <EditOrderPage />
-    </PrivateRoute>
-  }
-/>
-import EditOrderPage from "./EditOrderPage";
-// ...
-<Route
-  path="/edit-order/:orderId"
-  element={
-    <PrivateRoute>
-      <EditOrderPage />
-    </PrivateRoute>
-  }
-/>
