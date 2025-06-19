@@ -5,15 +5,8 @@
   "dependencies": {
     "express": "^4.19.2"
   },
-  "devDependencies": {
-    "eslint": "^8.56.0",
-    "@typescript-eslint/parser": "^7.0.0",
-    "@typescript-eslint/eslint-plugin": "^7.0.0"
-  },
   "scripts": {
     "start": "node index.js",
-    "start:prod": "node index.js",
-    "build": "echo \"no build step\"",
-    "test": "echo \"no tests\""
+    "start:prod": "node index.js"
   }
 }
