@@ -4,15 +4,10 @@
   "description": "Backend for Green P2P Exchange (NestJS Example, production-ready)",
   "main": "dist/main.js",
   "scripts": {
-    "start": "nest start",
+    "start": "node dist/main.js",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main.js",
-    "build": "nest build",
-    "migration:generate": "typeorm migration:generate -d src/migrations",
-    "migration:run": "typeorm migration:run",
-    "migration:revert": "typeorm migration:revert",
-    "test": "jest",
-    "lint": "echo 'Linting skipped in production'"
+    "build": "nest build"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -31,6 +26,10 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "stripe": "^14.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.0.0",
+    "typescript": "^5.4.0"
   },
   "license": "MIT"
 }
