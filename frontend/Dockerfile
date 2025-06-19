@@ -1,23 +1,14 @@
-# Используем официальный Node.js образ
-FROM node:20-alpine
+FROM node:18 AS builder
 
-# Задаём рабочую директорию
 WORKDIR /app
 
-# Копируем package.json и package-lock.json
 COPY package*.json ./
+RUN npm install
 
-# Устанавливаем зависимости
-RUN npm install --production
-
-# Копируем остальные исходники
 COPY . .
-
-# Собираем TypeScript (если используется)
 RUN npm run build
 
-# Указываем порт
-EXPOSE 4000
-
-# Запуск приложения
-CMD ["npm", "run", "start:prod"]
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
