@@ -55,3 +55,31 @@ export default function OrdersList() {
     </div>
   );
 }
+
+// ... часть импорта
+import { Link } from "react-router-dom";
+
+export default function OrdersList() {
+  // ... остальной код
+  return (
+    <div className="p2p-app">
+      <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+        <nav className="tabs">
+          {TABS.map((t, i) => (
+            <button
+              key={t}
+              className={tab === i ? "active" : ""}
+              onClick={() => setTab(i)}
+            >
+              {t}
+            </button>
+          ))}
+        </nav>
+        <Link to="/my-orders" className="filter-btn" style={{marginLeft: 20}}>
+          Мои ордера
+        </Link>
+      </div>
+      {/* ... остальной JSX */}
+    </div>
+  );
+}
