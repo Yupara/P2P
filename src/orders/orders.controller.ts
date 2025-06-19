@@ -234,3 +234,43 @@ export class OrdersController {
     return { success: false, message: 'Order not found' };
   }
 }
+import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+
+interface Order {
+  id: number;
+  username: string;
+  price: string;
+  amount: string;
+  limits: string;
+  payment: string;
+  orders: number;
+  percent: number;
+  status: string;
+  owner: string;
+  payData?: any;
+}
+
+let ORDERS: Order[] = [
+  // ... (ордеры)
+];
+
+@Controller('orders')
+export class OrdersController {
+  // ... остальные методы
+
+  @Patch(':id')
+  editOrder(@Param('id') id: string, @Body() body: Partial<Order>) {
+    const idx = ORDERS.findIndex(o => o.id === Number(id));
+    if (idx === -1) return { success: false, message: 'Order not found' };
+    ORDERS[idx] = { ...ORDERS[idx], ...body };
+    return { success: true, order: ORDERS[idx] };
+  }
+
+  @Delete(':id')
+  deleteOrder(@Param('id') id: string) {
+    const idx = ORDERS.findIndex(o => o.id === Number(id));
+    if (idx === -1) return { success: false, message: 'Order not found' };
+    ORDERS.splice(idx, 1);
+    return { success: true };
+  }
+}
