@@ -1,13 +1,10 @@
 {
   "name": "green-p2p-backend",
   "version": "1.0.0",
-  "description": "Backend for Green P2P Exchange (NestJS Example, production-ready)",
-  "main": "dist/main.js",
   "scripts": {
+    "build": "nest build",
     "start": "node dist/main.js",
-    "start:dev": "nest start --watch",
-    "start:prod": "node dist/main.js",
-    "build": "nest build"
+    "start:prod": "node dist/main.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -30,6 +27,5 @@
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
     "typescript": "^5.4.0"
-  },
-  "license": "MIT"
+  }
 }
