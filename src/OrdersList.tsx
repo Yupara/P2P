@@ -133,3 +133,7 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
   <option value="price-asc">Цена ↑</option>
   <option value="price-desc">Цена ↓</option>
 </select>
+const [modalOrder, setModalOrder] = useState<Order|null>(null);
+// ...
+<OrderCard {...order} key={order.id} onClick={() => setModalOrder(order)} />
+<OrderModal order={modalOrder} onClose={() => setModalOrder(null)} />
