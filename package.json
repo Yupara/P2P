@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    // твои обычные зависимости сюда
+    "express": "^4.19.2"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
