@@ -1,4 +1,13 @@
-"scripts": {
-  "ls": "node test.js",
-  ...
+{
+  "name": "green-p2p-backend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "start:prod": "node index.js",
+    "build": "echo \"No build step\""
+  }
 }
