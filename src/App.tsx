@@ -21,3 +21,6 @@ export default function App() {
     </Router>
   );
 }
+import CreateOrderPage from "./CreateOrderPage";
+// ...
+<Route path="/create-order" element={<CreateOrderPage />} />
