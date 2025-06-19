@@ -12,3 +12,5 @@
   min-width: 320px;
   color: #fff;
 }
+.order-card { cursor: pointer; transition: box-shadow 0.15s; }
+.order-card:hover { box-shadow: 0 0 8px #ffd60088; }
