@@ -53,3 +53,33 @@ export class OrdersController {
     ];
   }
 }
+
+import { Controller, Get, Param } from '@nestjs/common';
+
+@Controller('orders')
+export class OrdersController {
+  private orders = [
+    {
+      id: 1,
+      username: "Savak",
+      price: "70,96",
+      amount: "304,7685 USDT",
+      limits: "500 – 500 000 RUB",
+      payment: "SBP, кольнениe",
+      orders: 40,
+      percent: 10,
+      status: "online",
+    },
+    // ... остальные ордера
+  ];
+
+  @Get()
+  findAll() {
+    return this.orders;
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.orders.find(o => o.id === Number(id));
+  }
+}
