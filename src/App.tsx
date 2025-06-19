@@ -24,3 +24,13 @@ export default function App() {
 import CreateOrderPage from "./CreateOrderPage";
 // ...
 <Route path="/create-order" element={<CreateOrderPage />} />
+import EditOrderPage from "./EditOrderPage";
+// ...
+<Route
+  path="/edit-order/:orderId"
+  element={
+    <PrivateRoute>
+      <EditOrderPage />
+    </PrivateRoute>
+  }
+/>
