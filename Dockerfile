@@ -1,38 +1,29 @@
-# Используем официальный Node.js образ для production
-FROM node:20-alpine
+# Stage 1: Build
+FROM node:20-alpine AS builder
 
-# Создаём рабочую директорию
 WORKDIR /app
 
-# Копируем package.json и package-lock.json (или yarn.lock)
 COPY package*.json ./
 
-# Устанавливаем зависимости
-RUN npm install --production
+RUN npm install
 
-# Копируем остальные исходники проекта
 COPY . .
 
-# Собираем проект (если TypeScript/NestJS)
 RUN npm run build
 
-# Указываем порт (замените при необходимости)
+# Stage 2: Production
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install --omit=dev
+
+COPY --from=builder /app/dist ./dist
+
+COPY .env .env
+
 EXPOSE 4000
 
-# Запускаем приложение
-CMD ["npm", "run", "start:prod"]
-
-FROM node:20-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install --production
-
-COPY . .
-
-RUN npm run build
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
+CMD ["node", "dist/main.js"]
