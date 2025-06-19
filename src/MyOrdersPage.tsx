@@ -37,3 +37,11 @@ export default function MyOrdersPage() {
     </div>
   );
 }
+
+import { Link } from "react-router-dom";
+// ...
+<div style={{marginBottom: 18}}>
+  <Link to="/create-order" className="buy-btn">
+    + Новый ордер
+  </Link>
+</div>
