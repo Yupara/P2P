@@ -1,4 +1,5 @@
 import React from "react";
+// ...дальше весь ваш код, без других import React
 
 export interface Order {
   username: string;
