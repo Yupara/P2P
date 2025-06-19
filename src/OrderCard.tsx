@@ -9,6 +9,7 @@ export interface Order {
   orders: number;
   percent: number;
   status: "online" | "offline" | "warning";
+  // add id if needed
 }
 
 export const ordersMock: Order[] = [
@@ -44,24 +45,28 @@ export const ordersMock: Order[] = [
   },
 ];
 
-export function OrderCard(order: Order) {
+export function OrderCard(
+  props: Order & { onClick?: () => void }
+) {
   return (
-    <div className="order-card">
+    <div className="order-card" onClick={props.onClick} style={{cursor: props.onClick ? "pointer" : undefined}}>
       <div className="order-left">
-        <OrderStatus status={order.status} />
+        <OrderStatus status={props.status} />
         <div>
-          <div className="order-username">{order.username}</div>
-          <div className="order-price">₽ {order.price}</div>
-          <div className="order-amount">Количество {order.amount}</div>
-          <div className="order-limits">Лимиты {order.limits}</div>
-          <div className="order-payment">{order.payment}</div>
+          <div className="order-username">{props.username}</div>
+          <div className="order-price">₽ {props.price}</div>
+          <div className="order-amount">Количество {props.amount}</div>
+          <div className="order-limits">Лимиты {props.limits}</div>
+          <div className="order-payment">{props.payment}</div>
         </div>
       </div>
       <div className="order-right">
         <div>
-          {order.orders} Ордеров | {order.percent} %
+          {props.orders} Ордеров | {props.percent} %
         </div>
-        <button className="buy-btn">Покупка</button>
+        <button className="buy-btn" onClick={e => { e.stopPropagation(); if(props.onClick) props.onClick(); }}>
+          Покупка
+        </button>
       </div>
     </div>
   );
