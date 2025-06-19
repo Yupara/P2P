@@ -117,3 +117,13 @@ useEffect(() => {
   const interval = setInterval(fetchOrders, 10000); // обновлять каждые 10 сек
   return () => { mounted = false; clearInterval(interval); };
 }, []);
+const [sortBy, setSortBy] = useState("date-desc");
+
+const sortedOrders = [...filteredOrders].sort((a, b) => {
+  if (sortBy === "price-asc") return parseFloat(a.price) - parseFloat(b.price);
+  if (sortBy === "price-desc") return parseFloat(b.price) - parseFloat(a.price);
+  // Предполагаем, что есть поле createdAt (добавьте его при создании ордера!)
+  if (sortBy === "date-asc") return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+  if (sortBy === "date-desc") return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  return 0;
+});
