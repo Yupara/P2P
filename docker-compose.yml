@@ -1,0 +1,29 @@
+version: "3"
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: greenp2p
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/greenp2p
+      - JWT_SECRET=your_jwt_secret
+      # Добавить остальные переменные
+    volumes:
+      - ./backend:/app
+
+volumes:
+  pgdata:
