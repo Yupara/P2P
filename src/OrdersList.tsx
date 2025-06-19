@@ -127,3 +127,9 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
   if (sortBy === "date-desc") return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   return 0;
 });
+<select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+  <option value="date-desc">Сначала новые</option>
+  <option value="date-asc">Сначала старые</option>
+  <option value="price-asc">Цена ↑</option>
+  <option value="price-desc">Цена ↓</option>
+</select>
