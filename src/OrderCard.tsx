@@ -91,3 +91,22 @@ export interface Order {
   status: "online" | "offline" | "warning";
   // ...
 }
+
+export interface Order {
+  id: number;
+  username: string;
+  price: string;
+  amount: string;
+  limits: string;
+  payment: string;
+  orders: number;
+  percent: number;
+  status: "online" | "offline" | "warning";
+  payData?: {
+    bank: string;
+    fullName: string;
+    card: string;
+    buyer: string;
+    orderTime: string;
+  };
+}
