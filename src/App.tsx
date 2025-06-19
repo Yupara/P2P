@@ -34,3 +34,13 @@ import EditOrderPage from "./EditOrderPage";
     </PrivateRoute>
   }
 />
+import EditOrderPage from "./EditOrderPage";
+// ...
+<Route
+  path="/edit-order/:orderId"
+  element={
+    <PrivateRoute>
+      <EditOrderPage />
+    </PrivateRoute>
+  }
+/>
