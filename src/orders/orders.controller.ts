@@ -165,3 +165,72 @@ export class OrdersController {
     return { success: false, message: 'Order not found' };
   }
 }
+import { Controller, Get, Post, Body, Param, Patch, Req } from '@nestjs/common';
+
+interface Order {
+  id: number;
+  username: string;
+  price: string;
+  amount: string;
+  limits: string;
+  payment: string;
+  orders: number;
+  percent: number;
+  status: string;
+  owner: string; // username владельца
+  payData?: any;
+}
+
+let ORDERS: Order[] = [
+  {
+    id: 1,
+    username: "Savak",
+    price: "70,96",
+    amount: "304,7685 USDT",
+    limits: "500 – 500 000 RUB",
+    payment: "SBP, кольнениe",
+    orders: 40,
+    percent: 10,
+    status: "online",
+    owner: "demo", // для примера
+    payData: {
+      bank: "Сбербанк",
+      fullName: "Иванов Иван",
+      card: "1234 5678 9012 3456",
+      buyer: "goldyan",
+      orderTime: "2024-01-23 20:25:14"
+    }
+  },
+  // ... другие ордера
+];
+
+@Controller('orders')
+export class OrdersController {
+  @Get()
+  findAll() {
+    return ORDERS;
+  }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return ORDERS.find(o => o.id === Number(id));
+  }
+  @Get('/user/:username')
+  findUserOrders(@Param('username') username: string) {
+    return ORDERS.filter(order => order.owner === username);
+  }
+  @Post()
+  create(@Body() body: Omit<Order, 'id'>) {
+    const id = ORDERS.length ? Math.max(...ORDERS.map(o => o.id)) + 1 : 1;
+    ORDERS.push({ ...body, id });
+    return { success: true, id };
+  }
+  @Patch(':id/status')
+  updateStatus(@Param('id') id: string, @Body() body: { status: string }) {
+    const order = ORDERS.find(o => o.id === Number(id));
+    if (order) {
+      order.status = body.status;
+      return { success: true, order };
+    }
+    return { success: false, message: 'Order not found' };
+  }
+}
