@@ -293,3 +293,16 @@ export default function OrdersList() {
     </div>
   );
 }
+// Было (ошибка):
+return (
+  <div>...</div>
+  <div>...</div>
+);
+
+// Надо:
+return (
+  <>
+    <div>...</div>
+    <div>...</div>
+  </>
+);
