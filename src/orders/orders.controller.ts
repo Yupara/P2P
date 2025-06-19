@@ -280,3 +280,72 @@ create(@Body() body: Omit<Order, 'id'>) {
   ORDERS.push({ ...body, id, createdAt: body.createdAt || new Date().toISOString() });
   return { success: true, id };
 }
+import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+
+interface Order {
+  id: number;
+  username: string;
+  price: string;
+  amount: string;
+  limits: string;
+  payment: string;
+  orders: number;
+  percent: number;
+  status: string;
+  owner: string;
+  createdAt: string;
+  payData?: any;
+}
+
+let ORDERS: Order[] = [];
+
+@Controller('orders')
+export class OrdersController {
+  @Get()
+  findAll() {
+    return ORDERS;
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return ORDERS.find(o => o.id === Number(id));
+  }
+
+  @Get('/user/:username')
+  findUserOrders(@Param('username') username: string) {
+    return ORDERS.filter(order => order.owner === username);
+  }
+
+  @Post()
+  create(@Body() body: Omit<Order, 'id'>) {
+    const id = ORDERS.length ? Math.max(...ORDERS.map(o => o.id)) + 1 : 1;
+    ORDERS.push({ ...body, id, createdAt: body.createdAt || new Date().toISOString() });
+    return { success: true, id };
+  }
+
+  @Patch(':id')
+  editOrder(@Param('id') id: string, @Body() body: Partial<Order>) {
+    const idx = ORDERS.findIndex(o => o.id === Number(id));
+    if (idx === -1) return { success: false, message: 'Order not found' };
+    ORDERS[idx] = { ...ORDERS[idx], ...body };
+    return { success: true, order: ORDERS[idx] };
+  }
+
+  @Patch(':id/status')
+  updateStatus(@Param('id') id: string, @Body() body: { status: string }) {
+    const order = ORDERS.find(o => o.id === Number(id));
+    if (order) {
+      order.status = body.status;
+      return { success: true, order };
+    }
+    return { success: false, message: 'Order not found' };
+  }
+
+  @Delete(':id')
+  deleteOrder(@Param('id') id: string) {
+    const idx = ORDERS.findIndex(o => o.id === Number(id));
+    if (idx === -1) return { success: false, message: 'Order not found' };
+    ORDERS.splice(idx, 1);
+    return { success: true };
+  }
+}
