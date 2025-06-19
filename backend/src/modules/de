@@ -1,0 +1,33 @@
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { User } from '../users/user.entity';
+import { Order } from '../orders/order.entity';
+
+@Entity()
+export class Deal {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @ManyToOne(() => Order, (order) => order.id)
+  order: Order;
+
+  @ManyToOne(() => User, (user) => user.id)
+  buyer: User;
+
+  @ManyToOne(() => User, (user) => user.id)
+  seller: User;
+
+  @Column({ type: 'decimal', precision: 18, scale: 8 })
+  amount: number;
+
+  @Column()
+  status: string; // WAIT_PAYMENT, PAID, RELEASED, DISPUTE, CANCELED, FROZEN
+
+  @Column({ type: 'decimal', precision: 18, scale: 8 })
+  buyerFee: number;
+
+  @Column({ type: 'decimal', precision: 18, scale: 8 })
+  sellerFee: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
+}
