@@ -106,3 +106,14 @@ export default function OrdersList() {
     </div>
   );
 }
+useEffect(() => {
+  let mounted = true;
+  const fetchOrders = () => {
+    fetch("/orders")
+      .then(res => res.json())
+      .then(data => { if (mounted) setOrders(data); });
+  };
+  fetchOrders();
+  const interval = setInterval(fetchOrders, 10000); // обновлять каждые 10 сек
+  return () => { mounted = false; clearInterval(interval); };
+}, []);
