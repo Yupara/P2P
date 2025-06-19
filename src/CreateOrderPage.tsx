@@ -83,3 +83,8 @@ export default function CreateOrderPage() {
     </div>
   );
 }
+const body = {
+  // ...
+  createdAt: new Date().toISOString(),
+  // ...
+};
