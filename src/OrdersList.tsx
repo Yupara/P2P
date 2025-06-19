@@ -1,66 +1,52 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { OrderCard, Order } from "./OrderCard";
-import "./App.css";
 
-const TABS = ["Покупка", "Продажа"];
+const STATUS_FILTERS = [
+  { value: "", label: "Все статусы" },
+  { value: "online", label: "Online" },
+  { value: "offline", label: "Offline" },
+  { value: "warning", label: "Warning" },
+  { value: "paid", label: "Paid" },
+  { value: "cancelled", label: "Cancelled" }
+];
 
 export default function OrdersList() {
-  const [tab, setTab] = useState(0);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [tab, setTab] = useState(0);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+  const [payment, setPayment] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://your-backend-api.com/orders") // замените на ваш реальный endpoint
+    fetch("/orders")
       .then(res => res.json())
-      .then(data => setOrders(data));
+      .then(setOrders);
   }, []);
 
-  return (
-    <div className="p2p-app">
-      <nav className="tabs">
-        {TABS.map((t, i) => (
-          <button
-            key={t}
-            className={tab === i ? "active" : ""}
-            onClick={() => setTab(i)}
-          >
-            {t}
-          </button>
-        ))}
-      </nav>
-      <section className="filters">
-        <select>
-          <option>USDT</option>
-        </select>
-        <input placeholder="Сумма" />
-        <select>
-          <option>Все способы оплаты</option>
-        </select>
-        <button className="filter-btn">Фильтр</button>
-      </section>
-      <div className="hotswap-banner">
-        Попробуйте P2P HotSwap – лучшие ставки и больше ликвидности!
-        <button>Узнать больше</button>
-      </div>
-      <section className="orders">
-        {orders.map((order, idx) => (
-          <OrderCard
-            {...order}
-            key={order.username + order.price}
-            onClick={() => navigate(`/order/${order.id}`)}
-          />
-        ))}
-      </section>
-    </div>
-  );
-}
+  // Уникальные способы оплаты для фильтра
+  const paymentOptions = Array.from(new Set(orders.map(o => o.payment || "")))
+    .filter(Boolean)
+    .map(p => ({ value: p, label: p }));
 
-// ... часть импорта
-import { Link } from "react-router-dom";
+  // Применение фильтров
+  const filteredOrders = orders.filter(order => {
+    const matchesSearch = search
+      ? order.price.includes(search)
+        || order.amount.includes(search)
+        || order.limits.includes(search)
+        || order.payment.toLowerCase().includes(search.toLowerCase())
+        || (order.payData?.fullName || "").toLowerCase().includes(search.toLowerCase())
+        || (order.username || "").toLowerCase().includes(search.toLowerCase())
+      : true;
+    const matchesStatus = status ? order.status === status : true;
+    const matchesPayment = payment ? order.payment === payment : true;
+    return matchesSearch && matchesStatus && matchesPayment;
+  });
 
-export default function OrdersList() {
-  // ... остальной код
+  const TABS = ["Все", "Купить", "Продать"]; // можно оставить для визуала
+
   return (
     <div className="p2p-app">
       <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
@@ -79,7 +65,44 @@ export default function OrdersList() {
           Мои ордера
         </Link>
       </div>
-      {/* ... остальной JSX */}
+      <div style={{margin: "16px 0", display: "flex", gap: 16, alignItems: "center"}}>
+        <input
+          placeholder="Поиск..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{padding: 4, borderRadius: 4}}
+        />
+        <select value={status} onChange={e => setStatus(e.target.value)}>
+          {STATUS_FILTERS.map(f => (
+            <option key={f.value} value={f.value}>{f.label}</option>
+          ))}
+        </select>
+        <select value={payment} onChange={e => setPayment(e.target.value)}>
+          <option value="">Все способы оплаты</option>
+          {paymentOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+        {(search || status || payment) && (
+          <button
+            className="filter-btn"
+            style={{marginLeft: 8}}
+            onClick={() => { setSearch(""); setStatus(""); setPayment(""); }}
+          >
+            Сбросить фильтры
+          </button>
+        )}
+      </div>
+      <section className="orders">
+        {filteredOrders.length === 0 && <div>Нет ордеров по фильтру</div>}
+        {filteredOrders.map((order) => (
+          <OrderCard
+            {...order}
+            key={order.id}
+            onClick={() => navigate(`/order/${order.id}`)}
+          />
+        ))}
+      </section>
     </div>
   );
 }
