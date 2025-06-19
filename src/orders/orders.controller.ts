@@ -274,3 +274,9 @@ export class OrdersController {
     return { success: true };
   }
 }
+@Post()
+create(@Body() body: Omit<Order, 'id'>) {
+  const id = ORDERS.length ? Math.max(...ORDERS.map(o => o.id)) + 1 : 1;
+  ORDERS.push({ ...body, id, createdAt: body.createdAt || new Date().toISOString() });
+  return { success: true, id };
+}
