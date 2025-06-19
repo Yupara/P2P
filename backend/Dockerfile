@@ -10,6 +10,3 @@ RUN npm run build
 
 EXPOSE 3000
 CMD ["npm", "run", "start:prod"]
-
-cd backend
-docker build -t my-backend .
