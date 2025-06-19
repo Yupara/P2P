@@ -5,6 +5,7 @@ import { Order } from "./OrderCard";
 export default function PaymentPage() {
   const { orderId } = useParams();
   const [order, setOrder] = useState<Order | null>(null);
+  const [statusMsg, setStatusMsg] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +17,22 @@ export default function PaymentPage() {
   if (!order) return <div className="p2p-app">Загрузка...</div>;
 
   const pay = order.payData || {};
+
+  const handleStatusChange = async (newStatus: string) => {
+    setStatusMsg("Отправка...");
+    const res = await fetch(`/orders/${order.id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus })
+    });
+    const data = await res.json();
+    if (data.success) {
+      setOrder({ ...order, status: newStatus });
+      setStatusMsg("Статус обновлен: " + newStatus);
+    } else {
+      setStatusMsg("Ошибка: " + data.message);
+    }
+  };
 
   return (
     <div className="p2p-app">
@@ -38,13 +55,24 @@ export default function PaymentPage() {
         <b>Имя покупателя:</b> {pay.buyer} <br />
         <b>Подтверждён</b>
       </div>
-      <button className="buy-btn" style={{fontSize: 18, padding: "10px 38px", marginRight: 16}}>
+      <button
+        className="buy-btn"
+        style={{fontSize: 18, padding: "10px 38px", marginRight: 16}}
+        onClick={() => handleStatusChange("paid")}
+      >
         Я оплатил
       </button>
-      <button className="filter-btn" style={{fontSize: 18, padding: "10px 38px"}}>
+      <button
+        className="filter-btn"
+        style={{fontSize: 18, padding: "10px 38px"}}
+        onClick={() => handleStatusChange("cancelled")}
+      >
         Отменить ордер
       </button>
       <div style={{marginTop: 24, color: "#ffd600"}}>Возникла проблема?</div>
+      {statusMsg && (
+        <div style={{marginTop: 18, color: "#fff"}}>{statusMsg}</div>
+      )}
     </div>
   );
 }
