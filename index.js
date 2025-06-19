@@ -1,5 +1,3 @@
-// Пример простого backend на express
-
 const express = require('express');
 const app = express();
 
