@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
-@Module({
-  imports: [],
-  controllers: [],
-  providers: [],
-})
-export class AppModule {}
+@Controller()
+export class AppController {
+  @Get()
+  getRoot(): string {
+    return 'Backend is working!';
+  }
+}
