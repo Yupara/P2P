@@ -45,3 +45,21 @@ function App() {
 }
 
 export default App;
+
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import OrdersList from "./OrdersList";
+import OrderPage from "./OrderPage";
+import PaymentPage from "./PaymentPage";
+
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<OrdersList />} />
+        <Route path="/order/:orderId" element={<OrderPage />} />
+        <Route path="/pay/:orderId" element={<PaymentPage />} />
+      </Routes>
+    </Router>
+  );
+}
