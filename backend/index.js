@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-// Разрешить запросы с любых доменов
 app.use(cors());
 
+// Добавь этот маршрут:
 app.get("/api/hello", (req, res) => {
   res.json({ message: "Backend работает!" });
 });
