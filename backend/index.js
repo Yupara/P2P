@@ -2,9 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-app.use(cors({
-  origin:"https://p2p-production-8881.up.railway.app/" // замени на свой фронт!
-}));
+// Разрешить запросы с любых доменов
+app.use(cors());
 
 app.get("/api/hello", (req, res) => {
   res.json({ message: "Backend работает!" });
