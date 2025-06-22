@@ -17,16 +17,12 @@ export default function Home() {
   return (
     <main style={{ fontFamily: "sans-serif", padding: "2rem" }}>
       <h1>Фронтенд работает!</h1>
-      <p>Пробуем запрос к бэкенду:</p>
+      <p>Данные с бэкенда:</p>
       {error && <div style={{ color: "red" }}>Ошибка: {error}</div>}
       {data && (
         <pre>{JSON.stringify(data, null, 2)}</pre>
       )}
-      <p>
-        <small>
-          (Редактируй <code>pages/index.tsx</code>)
-        </small>
-      </p>
+      {!error && !data && <div>Загрузка...</div>}
     </main>
   );
 }
