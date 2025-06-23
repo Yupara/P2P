@@ -1,0 +1,136 @@
+:root {
+  --primary-dark: #172a22;
+  --secondary-dark: #22372f;
+  --accent-green: #3de888;
+  --accent-green-dark: #178355;
+  --text-main: #e7ffe3;
+  --text-secondary: #9be7c4;
+}
+
+.exchange-container {
+  background: var(--primary-dark);
+  min-height: 100vh;
+  padding: 32px 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: var(--text-main);
+}
+
+.exchange-title {
+  text-align: center;
+  color: var(--accent-green);
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.exchange-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.exchange-filters select,
+.exchange-filters .pay-method-input {
+  background: var(--secondary-dark);
+  color: var(--text-main);
+  border: 1px solid var(--accent-green-dark);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 16px;
+  outline: none;
+}
+.exchange-filters .pay-method-input {
+  width: 220px;
+}
+
+.filter-btn {
+  background: var(--accent-green-dark);
+  color: var(--text-main);
+  border: none;
+  border-radius: 6px;
+  padding: 7px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.filter-btn:hover {
+  background: var(--accent-green);
+  color: var(--primary-dark);
+}
+
+.arrow {
+  font-size: 22px;
+  color: var(--accent-green);
+}
+
+.offers-table-container {
+  width: 92%;
+  margin: 0 auto;
+  background: var(--secondary-dark);
+  border-radius: 12px;
+  box-shadow: 0 3px 16px #0005;
+  padding: 24px 0;
+}
+
+.offers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.offers-table th, .offers-table td {
+  padding: 13px 10px;
+  text-align: center;
+}
+
+.offers-table th {
+  background: var(--primary-dark);
+  color: var(--accent-green);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.offers-table td {
+  border-bottom: 1px solid #2c4e3d;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+.offers-table td.price {
+  color: var(--accent-green);
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.buy-btn, .sell-btn {
+  border: none;
+  border-radius: 7px;
+  font-weight: bold;
+  padding: 8px 22px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.buy-btn {
+  background: var(--accent-green);
+  color: var(--primary-dark);
+}
+.buy-btn:hover {
+  background: #62ffc1;
+}
+.sell-btn {
+  background: #205c3b;
+  color: var(--accent-green);
+}
+.sell-btn:hover {
+  background: #2e7c53;
+  color: #fff;
+}
+
+.no-offers {
+  color: #e57373;
+  text-align: center;
+  margin-top: 22px;
+  font-size: 18px;
+  font-weight: 500;
+}
