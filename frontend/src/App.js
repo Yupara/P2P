@@ -1,4 +1,11 @@
+import Exchange from './Exchange';
+
 function App() {
-  return <h1>Hello world!</h1>;
+  return (
+    <div>
+      <Exchange />
+    </div>
+  );
 }
+
 export default App;
