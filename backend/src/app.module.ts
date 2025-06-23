@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { OffersModule } from './offers/offers.module';
-// ... другие импорты
+// Импортируй остальные модули если нужно
 
 @Module({
   imports: [
     OffersModule,
-    // ... другие модули
+    // Другие модули
   ],
-  // ... остальное
 })
 export class AppModule {}
