@@ -1,10 +1,9 @@
 FROM nginx:1.24
 
-WORKDIR /app
+# Копируем содержимое папки public в папку, которую nginx раздаёт как root
+COPY public/ /usr/share/nginx/html/
 
-# Копируем папку public с твоим index.html в папку, которую nginx отдаёт как root
-COPY public /usr/share/nginx/html
-
+# Копируем кастомный nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
