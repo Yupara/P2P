@@ -1,29 +1,28 @@
-version: "3"
+version: '3.8'
+
 services:
-  db:
-    image: postgres:15
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
     restart: always
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: greenp2p
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
 
   backend:
-    build: ./backend
-    ports:
-      - "4000:4000"
-    depends_on:
-      - db
-    environment:
-      - DATABASE_URL=postgres://user:password@db:5432/greenp2p
-      - JWT_SECRET=your_jwt_secret
-      # Добавить остальные переменные
-    volumes:
-      - ./backend:/app
+    build:
+      context: ./backend
+    container_name: backend
+    restart: always
+    expose:
+      - "5000"
 
-volumes:
-  pgdata:
+  nginx:
+    image: nginx:1.24
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend/build:/usr/share/nginx/html:ro
+    depends_on:
+      - frontend
+      - backend
