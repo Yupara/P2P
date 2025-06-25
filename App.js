@@ -1,5 +1,10 @@
-const apiUrl = process.env.REACT_APP_API_URL;
+const express = require('express');
+const app = express();
 
-fetch(`${apiUrl}/api/hello`)
-  .then(res => res.json())
-  .then(data => console.log(data));
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Hello from backend!' });
+});
+
+app.listen(5000, () => {
+  console.log('Backend listening on port 5000');
+});
