@@ -1,16 +1,6 @@
 version: '3.8'
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-    container_name: frontend
-    working_dir: /app
-    command: sh -c "npm install && npm run build"
-    volumes:
-      - ./frontend:/app
-    # Ждать сборки фронта не нужно, nginx поднимется параллельно
-
   backend:
     build:
       context: ./backend
@@ -22,6 +12,15 @@ services:
     volumes:
       - ./backend:/app
     command: sh -c "npm install && npm run start:prod"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    working_dir: /app
+    command: sh -c "npm install && npm run build"
+    volumes:
+      - ./frontend:/app
 
   nginx:
     image: nginx:1.24
