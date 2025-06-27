@@ -1,4 +1,0 @@
-services:
-  backend:
-    expose:
-      - "5000"
