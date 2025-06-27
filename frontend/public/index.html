@@ -3,281 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>P2P Обменник — Bybit Style</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,500,700&display=swap">
-  <style>
-    body {
-      font-family: 'Inter', Arial, sans-serif;
-      background: #181A20;
-      color: #F5F6FA;
-      margin: 0;
-      min-height: 100vh;
-    }
-    header {
-      background: #23262F;
-      padding: 18px 0;
-      text-align: center;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: #FCD535;
-    }
-    .tabs {
-      display: flex;
-      justify-content: center;
-      margin: 24px 0 0 0;
-      gap: 16px;
-    }
-    .tab {
-      background: #23262F;
-      color: #F5F6FA;
-      border: none;
-      outline: none;
-      padding: 10px 32px;
-      border-radius: 8px 8px 0 0;
-      font-size: 1.08rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.1s;
-    }
-    .tab.active {
-      background: #181A20;
-      color: #FCD535;
-      border-bottom: 2px solid #FCD535;
-    }
-    main {
-      max-width: 660px;
-      margin: 0 auto;
-      background: #23262F;
-      border-radius: 0 0 16px 16px;
-      padding: 32px 24px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
-      min-height: 450px;
-    }
-    h2 {
-      color: #FCD535;
-      font-weight: 500;
-      margin-top: 0;
-      margin-bottom: 18px;
-      font-size: 1.4rem;
-      text-align: center;
-    }
-    form label {
-      display: block;
-      margin-top: 18px;
-      color: #F5F6FA;
-      font-size: 1rem;
-    }
-    input, select, textarea {
-      width: 100%;
-      background: #181A20;
-      color: #F5F6FA;
-      border: 1px solid #393D49;
-      border-radius: 8px;
-      padding: 10px 14px;
-      margin-top: 6px;
-      font-size: 1rem;
-      box-sizing: border-box;
-      transition: border 0.2s;
-    }
-    input:focus, select:focus, textarea:focus {
-      border: 1.5px solid #FCD535;
-      outline: none;
-    }
-    button[type="submit"] {
-      margin-top: 24px;
-      width: 100%;
-      padding: 14px;
-      background: #FCD535;
-      color: #23262F;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    button[type="submit"]:hover {
-      background: #FFD700;
-    }
-    .ads-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 32px;
-    }
-    .ads-table th, .ads-table td {
-      padding: 12px 10px;
-      text-align: left;
-    }
-    .ads-table th {
-      background: #181A20;
-      color: #FCD535;
-    }
-    .ads-table tr {
-      background: #23262F;
-      border-bottom: 1px solid #393D49;
-      transition: background 0.1s;
-    }
-    .ads-table tr:hover {
-      background: #262B38;
-    }
-    .ads-table td {
-      color: #F5F6FA;
-      font-size: 1rem;
-    }
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-size: 0.95em;
-      font-weight: 600;
-      color: #23262F;
-      background: #FCD535;
-      margin-right: 5px;
-    }
-    .footer {
-      margin: 40px auto 10px;
-      text-align: center;
-      color: #888;
-      font-size: 0.95rem;
-    }
-    @media (max-width: 700px) {
-      main, .ads-table th, .ads-table td { font-size: 0.96rem; }
-      main { padding: 20px 6px; }
-    }
-    @media (max-width: 480px) {
-      header, .tabs { font-size: 1.1rem; }
-      main { min-width: 0; }
-      .ads-table { font-size: 0.9rem; }
-    }
-  </style>
+  <title>Bybit P2P Обменник</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <header>P2P Обменник</header>
-  <div class="tabs">
-    <button class="tab active" id="tab-sell" onclick="switchTab('sell')">Продать</button>
-    <button class="tab" id="tab-buy" onclick="switchTab('buy')">Купить</button>
-  </div>
-  <main>
-    <h2>Создать объявление</h2>
-    <form id="p2p-form">
-      <label>
-        Отдаю:
-        <select id="fromCurrency" required>
-          <optgroup label="Фиат">
-            <option value="RUB">Рубль (RUB)</option>
-            <option value="USD">Доллар США (USD)</option>
-            <option value="EUR">Евро (EUR)</option>
-          </optgroup>
-          <optgroup label="Крипто">
-            <option value="USDT">Tether (USDT)</option>
-            <option value="BTC">Bitcoin (BTC)</option>
-            <option value="ETH">Ethereum (ETH)</option>
-          </optgroup>
-        </select>
-      </label>
-      <label>
-        Получаю:
-        <select id="toCurrency" required>
-          <optgroup label="Фиат">
-            <option value="RUB">Рубль (RUB)</option>
-            <option value="USD">Доллар США (USD)</option>
-            <option value="EUR">Евро (EUR)</option>
-          </optgroup>
-          <optgroup label="Крипто">
-            <option value="USDT">Tether (USDT)</option>
-            <option value="BTC">Bitcoin (BTC)</option>
-            <option value="ETH">Ethereum (ETH)</option>
-          </optgroup>
-        </select>
-      </label>
-      <label>
-        Сумма:
-        <input type="number" id="amount" min="0" step="any" required placeholder="Введите сумму">
-      </label>
-      <label>
-        Комментарий:
-        <textarea id="comment" rows="2" placeholder="Способы оплаты, условия, контакты"></textarea>
-      </label>
-      <button type="submit">Создать объявление</button>
-    </form>
-    <table class="ads-table" id="adsTable" style="display:none">
-      <thead>
-        <tr>
-          <th>Тип</th>
-          <th>Отдаю</th>
-          <th>Получаю</th>
-          <th>Сумма</th>
-          <th>Комментарий</th>
-        </tr>
-      </thead>
-      <tbody id="adsTableBody">
-      </tbody>
-    </table>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo">
+        <img src="https://static.bybit.com/logo.svg" alt="Bybit" height="32"/>
+        <span class="logo-text">P2P</span>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active">Купить</button>
+        <button class="nav-btn">Продать</button>
+        <button class="nav-btn">Мои сделки</button>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <h1 class="main-title">P2P предложения</h1>
+    <div class="table-wrapper">
+      <table class="offers-table">
+        <thead>
+          <tr>
+            <th>Продавец</th>
+            <th>Лимит</th>
+            <th>Способ оплаты</th>
+            <th>Цена</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="seller-name">CryptoKing</span><br/>
+              <span class="seller-rating">98.7% | 320 сделок</span>
+            </td>
+            <td>5,000 – 50,000 RUB</td>
+            <td>
+              <span class="payment-method">Тинькофф</span>
+            </td>
+            <td>
+              <span class="price">92.50 ₽</span>
+            </td>
+            <td>
+              <button class="action-btn">Купить</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="seller-name">FastBit</span><br/>
+              <span class="seller-rating">99.2% | 980 сделок</span>
+            </td>
+            <td>10,000 – 70,000 RUB</td>
+            <td>
+              <span class="payment-method">Сбербанк</span>
+            </td>
+            <td>
+              <span class="price">92.60 ₽</span>
+            </td>
+            <td>
+              <button class="action-btn">Купить</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="seller-name">BitP2P</span><br/>
+              <span class="seller-rating">97.1% | 155 сделок</span>
+            </td>
+            <td>2,000 – 20,000 RUB</td>
+            <td>
+              <span class="payment-method">QIWI</span>
+            </td>
+            <td>
+              <span class="price">92.75 ₽</span>
+            </td>
+            <td>
+              <button class="action-btn">Купить</button>
+            </td>
+          </tr>
+          <!-- Еще предложения ... -->
+        </tbody>
+      </table>
+    </div>
   </main>
-  <div class="footer">
-    Inspired by Bybit P2P · Для теста, не деньги!
-  </div>
-  <script>
-    // Хранилище объявлений (localStorage или временный массив)
-    let ads = JSON.parse(localStorage.getItem('p2p_ads_bybit_style') || '[]');
-    let currentTab = 'sell';
-
-    function switchTab(tab) {
-      currentTab = tab;
-      document.getElementById('tab-sell').classList.toggle('active', tab === 'sell');
-      document.getElementById('tab-buy').classList.toggle('active', tab === 'buy');
-      renderAds();
-    }
-
-    function addAd(ad) {
-      ads.unshift(ad);
-      localStorage.setItem('p2p_ads_bybit_style', JSON.stringify(ads));
-      renderAds();
-    }
-
-    function renderAds() {
-      const table = document.getElementById('adsTable');
-      const tbody = document.getElementById('adsTableBody');
-      tbody.innerHTML = '';
-      // Показывать только объявления по выбранному табу
-      const filtered = ads.filter(ad => ad.type === currentTab);
-      if (filtered.length === 0) {
-        table.style.display = 'none';
-        return;
-      }
-      table.style.display = '';
-      for (const ad of filtered) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><span class="badge">${ad.type === 'sell' ? 'Продажа' : 'Покупка'}</span></td>
-          <td>${ad.amount} ${ad.from}</td>
-          <td>${ad.to}</td>
-          <td>${ad.amount}</td>
-          <td>${ad.comment ? ad.comment : '-'}</td>
-        `;
-        tbody.appendChild(tr);
-      }
-    }
-
-    document.getElementById('p2p-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const from = document.getElementById('fromCurrency').value;
-      const to = document.getElementById('toCurrency').value;
-      const amount = document.getElementById('amount').value;
-      const comment = document.getElementById('comment').value;
-      addAd({
-        type: currentTab,
-        from,
-        to,
-        amount,
-        comment
-      });
-      this.reset();
-    });
-
-    // Инициализация
-    renderAds();
-  </script>
 </body>
 </html>
