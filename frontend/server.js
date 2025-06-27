@@ -2,13 +2,12 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Используем переменную окружения PORT, которую даёт Railway
+// Используем порт из окружения или 3000 по умолчанию (но Railway передаст свой)
 const port = process.env.PORT || 3000;
 
-// Раздаём статические файлы из папки build (или public — укажи свою папку)
+// Раздача статики (проверь свою папку - build или dist)
 app.use(express.static(path.join(__dirname, 'build')));
 
-// Для SPA: отдаём index.html на все остальные маршруты
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
