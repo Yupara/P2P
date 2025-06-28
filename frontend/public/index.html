@@ -3,44 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>P2P Обменник Bybit Style</title>
-  <link rel="stylesheet" href="bybit-p2p.css"/>
+  <title>P2P Обменник</title>
+  <link rel="stylesheet" href="../common/style.css"/>
+  <link rel="stylesheet" href="app.css"/>
 </head>
 <body>
-  <header class="bybit-header">
-    <div class="bybit-header__tabs">
-      <button id="tab-buy" class="bybit-header__tab active" onclick="switchTab('buy')">Покупка</button>
-      <button id="tab-sell" class="bybit-header__tab" onclick="switchTab('sell')">Продажа</button>
-    </div>
-    <div class="bybit-header__filter-row">
-      <select id="currency-filter">
-        <option value="USDT">USDT</option>
-        <option value="BTC">BTC</option>
-        <option value="ETH">ETH</option>
-      </select>
-      <select id="amount-filter">
-        <option value="">Сумма</option>
-        <option value="0-1000">0-1 000</option>
-        <option value="1000-10000">1 000-10 000</option>
-        <option value="10000-100000">10 000-100 000</option>
-      </select>
-      <select id="payment-filter">
-        <option value="">Все способы оплаты</option>
-        <option value="sbp">СБП</option>
-        <option value="sber">Сбербанк</option>
-        <option value="qiwi">QIWI</option>
-      </select>
-      <button id="filter-btn" onclick="applyFilters()">Фильтр</button>
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__logo">P2P Exchange</div>
+      <div class="header__nav">
+        <button class="nav__btn active" id="nav-market" onclick="route('market')"><span data-i18n="market">Market</span></button>
+        <button class="nav__btn" id="nav-orders" onclick="route('orders')"><span data-i18n="my_orders">My Orders</span></button>
+        <button class="nav__btn" id="nav-profile" onclick="route('profile')"><span data-i18n="profile">Profile</span></button>
+        <button class="nav__btn" id="nav-support" onclick="route('support')"><span data-i18n="support">Support</span></button>
+        <select id="lang-switch" onchange="setLang(this.value)">
+          <option value="ru">RU</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
     </div>
   </header>
-  <main class="bybit-main">
-    <div class="bybit-banner">
-      Попробуйте P2P HotSwap – лучшие ставки и больше ликвидности!
-      <button class="bybit-banner__btn">Узнать волью</button>
-    </div>
-    <div id="offers-list"></div>
-  </main>
-  <div id="deal-modal" class="deal-modal" style="display:none"></div>
-  <script src="bybit-p2p.js"></script>
+  <main id="main"></main>
+  <div id="modal"></div>
+  <script src="../common/i18n.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
