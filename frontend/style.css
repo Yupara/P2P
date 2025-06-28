@@ -1,334 +1,71 @@
 :root {
-  --bybit-bg: #13291C;
-  --bybit-card: #183528;
-  --bybit-dark: #122618;
-  --bybit-green: #2FE374;
-  --bybit-yellow: #FCD535;
-  --bybit-txt-main: #F2F2F2;
-  --bybit-txt-muted: #B7C2B5;
-  --bybit-txt-accent: #FCD535;
-  --bybit-txt-warn: #F9E07F;
-  --bybit-txt-danger: #FF6B6B;
-  --bybit-btn: #204D36;
-  --bybit-btn-hover: #2FE374;
-  --bybit-border: #224930;
-  --bybit-dot: #2FE374;
+  --bg-main: #14281b;
+  --bg-card: #183528;
+  --bg-dark: #122618;
+  --green: #2fe374;
+  --yellow: #fcd535;
+  --red: #ff6b6b;
+  --text-main: #f2f2f2;
+  --text-muted: #b7c2b5;
+  --text-accent: #fcd535;
+  --border: #224930;
+  --btn-bg: #204d36;
+  --btn-bg-hover: #2fe374;
 }
-
 html,body {
-  background: var(--bybit-bg);
-  color: var(--bybit-txt-main);
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Inter', Arial, sans-serif;
   margin: 0;
-  font-family: 'Inter', 'Arial', sans-serif;
   min-height: 100vh;
 }
-.bybit-header {
-  background: var(--bybit-dark);
-  padding: 0 0 12px 0;
-  border-bottom: 1px solid var(--bybit-border);
+.header {
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border);
+  padding: 0 0 8px 0;
 }
-.bybit-header__tabs {
+.header__inner {
   display: flex;
-  gap: 16px;
-  padding: 18px 16px 0 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 6vw 0 6vw;
 }
-.bybit-header__tab {
+.header__logo {
+  font-size: 1.45em;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--green);
+}
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav__btn {
   background: none;
   border: none;
-  color: var(--bybit-txt-muted);
-  font-size: 1.2rem;
+  color: var(--text-muted);
+  font-size: 1.1em;
   font-weight: 600;
-  padding: 8px 20px;
+  padding: 8px 18px;
   border-radius: 8px 8px 0 0;
   cursor: pointer;
   transition: color 0.12s, background 0.12s;
 }
-.bybit-header__tab.active {
-  color: var(--bybit-txt-main);
-  background: var(--bybit-bg);
+.nav__btn.active,
+.nav__btn:hover {
+  color: var(--text-main);
+  background: var(--bg-main);
 }
-.bybit-header__filter-row {
-  display: flex;
-  gap: 10px;
-  padding: 12px 16px 0 16px;
-}
-.bybit-header__filter-row select, .bybit-header__filter-row button {
-  background: var(--bybit-btn);
-  color: var(--bybit-txt-main);
-  border: 1px solid var(--bybit-border);
+#lang-switch {
+  background: var(--btn-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
   border-radius: 7px;
-  padding: 7px 16px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background 0.14s;
-}
-.bybit-header__filter-row button:hover {
-  background: var(--bybit-btn-hover);
-  color: #14391c;
-}
-.bybit-main {
-  max-width: 540px;
-  margin: 0 auto;
-  padding: 20px 4vw 32px;
-}
-.bybit-banner {
-  background: var(--bybit-card);
-  color: var(--bybit-txt-main);
-  border-radius: 13px;
-  padding: 18px 16px;
-  margin-bottom: 22px;
-  font-size: 1.08em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-.bybit-banner__btn {
-  background: var(--bybit-btn);
-  color: var(--bybit-txt-main);
-  border: 1px solid var(--bybit-border);
-  border-radius: 8px;
-  padding: 9px 18px;
-  font-weight: 600;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background 0.13s;
-}
-.bybit-banner__btn:hover {
-  background: var(--bybit-green);
-  color: #14461c;
-}
-.offer-card {
-  margin-bottom: 20px;
-  background: var(--bybit-card);
-  border-radius: 18px;
-  padding: 24px 20px 18px 20px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.offer-card__header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 1px;
-}
-.offer-card__avatar {
-  width: 28px;
-  height: 28px;
-  background: var(--bybit-bg);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1em;
-  font-weight: bold;
-  color: var(--bybit-dot);
-}
-.offer-card__dot {
-  width: 10px; height: 10px; border-radius: 50%; background: var(--bybit-dot); margin-right: 4px; display: inline-block;
-}
-.offer-card__dot.warn { background: var(--bybit-txt-warn);}
-.offer-card__dot.danger { background: var(--bybit-txt-danger);}
-.offer-card__name {
-  font-size: 1.06em;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--bybit-txt-main);
-}
-.offer-card__stat {
-  margin-left: auto;
-  font-size: 0.97em;
-  color: var(--bybit-txt-muted);
-  font-weight: 400;
-}
-.offer-card__time {
-  font-size: 0.9em;
-  color: var(--bybit-txt-muted);
-  margin-left: 5px;
-  font-weight: 400;
-}
-.offer-card__price {
-  font-size: 1.8em;
-  font-weight: 700;
-  color: var(--bybit-txt-accent);
-  margin-bottom: 0;
-}
-.offer-card__usdt {
-  font-size: 1.02em;
-  color: var(--bybit-txt-muted);
-  margin-top: 2px;
-}
-.offer-card__limits {
-  font-size: 0.98em;
-  color: var(--bybit-txt-main);
-  margin-top: 2px;
-}
-.offer-card__pay {
-  font-size: 0.97em;
-  color: var(--bybit-txt-muted);
-  margin-top: 5px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.offer-card__pay span {
-  background: #204D36;
-  border-radius: 7px;
-  color: var(--bybit-txt-main);
-  padding: 3px 9px;
-  font-size: 0.95em;
-  font-weight: 500;
-}
-.offer-card__action-row {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 6px;
-}
-.offer-card__btn {
-  background: var(--bybit-btn);
-  color: var(--bybit-green);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 22px;
-  font-size: 1.08em;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.18s, color 0.15s;
-}
-.offer-card__btn:hover {
-  background: var(--bybit-green);
-  color: #14461c;
-}
-.deal-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(20,25,20,0.90);
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.deal-modal__window {
-  background: var(--bybit-card);
-  color: var(--bybit-txt-main);
-  border-radius: 17px;
-  box-shadow: 0 2px 24px #0008;
-  padding: 0;
-  width: 98vw;
-  max-width: 400px;
-  overflow: hidden;
-  margin: 0 12px;
-}
-.deal-modal__header {
-  background: var(--bybit-dark);
-  padding: 18px 18px 12px 18px;
-  font-size: 1.11em;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  border-bottom: 1px solid var(--bybit-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.deal-modal__timer {
-  background: #2b1916;
-  color: var(--bybit-txt-danger);
-  border-radius: 8px;
-  font-size: 1.08em;
-  font-weight: 700;
-  padding: 5px 13px;
-  margin-left: 8px;
-}
-.deal-modal__main {
-  padding: 18px 18px;
-}
-.deal-modal__box {
-  background: var(--bybit-bg);
-  border-radius: 12px;
-  padding: 13px 12px 12px 12px;
-  margin-bottom: 17px;
-  font-size: 1em;
-}
-.deal-modal__label {
-  font-size:1em;
-  color: var(--bybit-txt-muted);
-  margin-bottom: 5px;
-  font-weight: 400;
-}
-.deal-modal__row {
-  display: flex;
-  justify-content: space-between;
-  margin: 5px 0;
-  font-size: 1.01em;
-}
-.deal-modal__row .label {
-  color: var(--bybit-txt-muted);
-}
-.deal-modal__row .value {
-  color: var(--bybit-txt-main);
-  font-weight: 600;
-}
-.deal-modal__pay {
-  background: #1d3324;
-  border-radius: 8px;
-  padding: 12px 10px;
-  margin-bottom: 13px;
-}
-.deal-modal__pay label {
-  display: block;
-  color: var(--bybit-txt-muted);
-  font-size: 0.97em;
-  margin-bottom: 2px;
-}
-.deal-modal__pay .pay-bank {
-  font-weight: 600;
-  color: var(--bybit-yellow);
-  font-size: 1.08em;
-}
-.deal-modal__footer {
-  background: var(--bybit-dark);
-  padding: 13px 16px 13px 16px;
-  border-top: 1px solid var(--bybit-border);
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  align-items: center;
-}
-.deal-modal__action {
-  flex: 1;
-  background: var(--bybit-yellow);
-  color: #222;
-  border: none;
-  border-radius: 9px;
-  font-size: 1.12em;
-  font-weight: 700;
-  padding: 13px 0;
-  cursor: pointer;
-  margin-right: 4px;
-  transition: background 0.13s;
-}
-.deal-modal__action:last-child {
-  margin-right: 0;
-  background: #223820;
-  color: var(--bybit-txt-main);
-  border: 1px solid var(--bybit-yellow);
-}
-.deal-modal__action.secondary {
-  background: #223820;
-  color: var(--bybit-txt-main);
-  border: 1px solid var(--bybit-yellow);
-}
-.deal-modal__problems {
-  margin-top: 10px;
-  text-align: center;
-  color: var(--bybit-txt-accent);
+  padding: 6px 14px;
   font-size: 1em;
 }
 @media (max-width: 600px) {
-  .bybit-main { max-width: 99vw; padding: 14px 2vw 32px;}
-  .deal-modal__window { max-width: 99vw;}
+  .header__inner { flex-direction: column; gap: 10px; padding: 12px 2vw 0 2vw;}
+  .header__logo { font-size: 1.14em;}
 }
