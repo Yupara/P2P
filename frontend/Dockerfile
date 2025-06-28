@@ -1,15 +1,13 @@
-FROM node:18 AS builder
+FROM node:18
 
 WORKDIR /app
 
-COPY package.json ./
+COPY frontend/package.json ./
 RUN npm install
 
-COPY . ./
+COPY frontend/ ./
 RUN npm run build
+RUN npm install -g serve
 
-FROM nginx:alpine
-COPY --from=builder /app/build /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 5000
+CMD ["serve", "-s", "build"]
