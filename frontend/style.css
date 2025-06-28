@@ -1,0 +1,68 @@
+:root {
+  --bg-main: #181A20;
+  --bg-panel: #23262F;
+  --font-main: #F5F6FA;
+  --font-secondary: #A2A5B9;
+  --yellow: #FCD535;
+  --accent: #FFD700;
+  --btn-bg: #FCD535;
+  --btn-bg-hover: #FFD700;
+  --btn-text: #23262F;
+  --border: #393D49;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-main);
+  color: var(--font-main);
+  font-family: 'Inter', Arial, sans-serif;
+  min-height: 100vh;
+}
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+.header {
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--yellow);
+}
+.nav {
+  display: flex;
+  gap: 18px;
+}
+.nav-btn {
+  background: none;
+  color: var(--font-main);
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.nav-btn.active,
+.nav-btn:hover {
+  background: var(--yellow);
+  color: var(--bg-panel);
+}
+@media (max-width: 800px) {
+  .container { max-width: 98vw; }
+  .header-inner { flex-direction: column; gap: 6px; height: auto; padding: 10px 0;}
+  .nav-btn { padding: 7px 8px; font-size: 0.98em;}
+}
