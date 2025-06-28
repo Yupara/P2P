@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>P2P Обменник</title>
+  <title>P2P Обменник Bybit Style</title>
   <link rel="stylesheet" href="bybit-style.css"/>
 </head>
 <body>
+  <div id="notifier"></div>
   <header class="header">
     <div class="container header-inner">
       <div class="logo">
@@ -21,6 +22,13 @@
         <button class="nav-btn" id="tab-support-btn" onclick="showSupport()">Поддержка</button>
         <button class="nav-btn" id="tab-admin-btn" onclick="showAdmin()">Админ</button>
       </nav>
+      <div class="header-user">
+        <span class="user-name">u/BybitDemo</span>
+        <div class="notif-bell" onclick="toggleNotif()">
+          <span class="notif-dot" id="notif-dot"></span>
+          <svg width="22" height="22" fill="none" viewBox="0 0 20 20"><path fill="#FCD535" d="M10 2a4 4 0 0 0-4 4v1.03C5.06 7.57 4.12 8.8 4.01 10.24L4 10.5v2.79l-.8 1.6A1 1 0 0 0 4 16h12a1 1 0 0 0 .8-1.61l-.8-1.6V10.5c0-1.44-.94-2.68-2-3.47V6a4 4 0 0 0-4-4Zm0 16a2 2 0 0 0 1.995-1.85L12 16h-4a2 2 0 0 0 1.995 1.85L10 18Z"/></svg>
+        </div>
+      </div>
     </div>
   </header>
   <main class="container">
@@ -30,7 +38,14 @@
     <div id="orders-section" style="display:none"></div>
     <div id="support-section" style="display:none"></div>
     <div id="admin-section" style="display:none"></div>
+    <div id="dispute-section" style="display:none"></div>
+    <div id="notif-panel" style="display:none"></div>
   </main>
-  <script src="p2p-app.js"></script>
+  <footer class="footer">
+    <div class="container">
+      <span>Demo Bybit-Style P2P &copy; 2025</span>
+    </div>
+  </footer>
+  <script src="app.js"></script>
 </body>
 </html>
