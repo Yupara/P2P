@@ -1,373 +1,334 @@
 :root {
-  --bg-main: #181A20;
-  --bg-panel: #23262F;
-  --font-main: #F5F6FA;
-  --font-secondary: #A2A5B9;
-  --yellow: #FCD535;
-  --accent: #FFD700;
-  --btn-bg: #FCD535;
-  --btn-bg-hover: #FFD700;
-  --btn-text: #23262F;
-  --border: #393D49;
-  --danger: #E85151;
-  --success: #10C46C;
+  --bybit-bg: #13291C;
+  --bybit-card: #183528;
+  --bybit-dark: #122618;
+  --bybit-green: #2FE374;
+  --bybit-yellow: #FCD535;
+  --bybit-txt-main: #F2F2F2;
+  --bybit-txt-muted: #B7C2B5;
+  --bybit-txt-accent: #FCD535;
+  --bybit-txt-warn: #F9E07F;
+  --bybit-txt-danger: #FF6B6B;
+  --bybit-btn: #204D36;
+  --bybit-btn-hover: #2FE374;
+  --bybit-border: #224930;
+  --bybit-dot: #2FE374;
 }
-html, body {
+
+html,body {
+  background: var(--bybit-bg);
+  color: var(--bybit-txt-main);
   margin: 0;
-  padding: 0;
-  background: var(--bg-main);
-  color: var(--font-main);
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: 'Inter', 'Arial', sans-serif;
   min-height: 100vh;
 }
-.container {
-  max-width: 1100px;
+.bybit-header {
+  background: var(--bybit-dark);
+  padding: 0 0 12px 0;
+  border-bottom: 1px solid var(--bybit-border);
+}
+.bybit-header__tabs {
+  display: flex;
+  gap: 16px;
+  padding: 18px 16px 0 16px;
+}
+.bybit-header__tab {
+  background: none;
+  border: none;
+  color: var(--bybit-txt-muted);
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: color 0.12s, background 0.12s;
+}
+.bybit-header__tab.active {
+  color: var(--bybit-txt-main);
+  background: var(--bybit-bg);
+}
+.bybit-header__filter-row {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px 0 16px;
+}
+.bybit-header__filter-row select, .bybit-header__filter-row button {
+  background: var(--bybit-btn);
+  color: var(--bybit-txt-main);
+  border: 1px solid var(--bybit-border);
+  border-radius: 7px;
+  padding: 7px 16px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.14s;
+}
+.bybit-header__filter-row button:hover {
+  background: var(--bybit-btn-hover);
+  color: #14391c;
+}
+.bybit-main {
+  max-width: 540px;
   margin: 0 auto;
-  padding: 0 12px;
+  padding: 20px 4vw 32px;
 }
-.header {
-  background: var(--bg-panel);
-  border-bottom: 1px solid var(--border);
-}
-.header-inner {
+.bybit-banner {
+  background: var(--bybit-card);
+  color: var(--bybit-txt-main);
+  border-radius: 13px;
+  padding: 18px 16px;
+  margin-bottom: 22px;
+  font-size: 1.08em;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
-  gap: 10px;
+  gap: 14px;
 }
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--yellow);
-}
-.nav {
-  display: flex;
-  gap: 10px;
-}
-.nav-btn {
-  background: none;
-  color: var(--font-main);
-  border: none;
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 7px 18px;
-  border-radius: 6px;
+.bybit-banner__btn {
+  background: var(--bybit-btn);
+  color: var(--bybit-txt-main);
+  border: 1px solid var(--bybit-border);
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-weight: 600;
+  font-size: 1em;
   cursor: pointer;
-  transition: background 0.18s, color 0.18s;
+  transition: background 0.13s;
 }
-.nav-btn.active,
-.nav-btn:hover {
-  background: var(--yellow);
-  color: var(--bg-panel);
+.bybit-banner__btn:hover {
+  background: var(--bybit-green);
+  color: #14461c;
 }
-.header-user {
+.offer-card {
+  margin-bottom: 20px;
+  background: var(--bybit-card);
+  border-radius: 18px;
+  padding: 24px 20px 18px 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.offer-card__header {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 1em;
+  margin-bottom: 1px;
 }
-.user-name {
-  color: var(--yellow);
-  font-weight: 700;
-}
-.notif-bell {
-  position: relative;
-  cursor: pointer;
-}
-.notif-dot {
-  position: absolute;
-  left: 15px; top: 2px;
-  width: 8px; height: 8px;
-  background: var(--danger);
+.offer-card__avatar {
+  width: 28px;
+  height: 28px;
+  background: var(--bybit-bg);
   border-radius: 50%;
-  display: inline-block;
-  border: 2px solid var(--bg-panel);
-  z-index: 2;
-}
-#notif-dot[hidden] { display: none; }
-#notif-panel {
-  position: fixed;
-  right: 10px;
-  top: 60px;
-  width: 320px;
-  background: var(--bg-panel);
-  color: var(--font-main);
-  border-radius: 11px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  z-index: 8;
-  padding: 18px 12px 6px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1em;
-  border: 1px solid var(--border);
+  font-weight: bold;
+  color: var(--bybit-dot);
 }
-.notif-list {
-  max-height: 300px;
-  overflow-y: auto;
+.offer-card__dot {
+  width: 10px; height: 10px; border-radius: 50%; background: var(--bybit-dot); margin-right: 4px; display: inline-block;
 }
-.notif-item {
-  margin-bottom: 14px;
-  border-left: 3px solid var(--yellow);
-  padding-left: 10px;
-  font-size: 0.98em;
-}
-.notif-title {
-  font-weight: 700;
-  color: var(--yellow);
-}
-.notif-time {
-  color: var(--font-secondary);
-  font-size: 0.87em;
-  margin-left: 8px;
-}
-.notif-item.unread { background: #181A20; }
-.notif-close {
-  position: absolute;
-  right: 12px; top: 8px;
-  background: none; border: none; color: var(--font-secondary); font-size: 1.2em; cursor: pointer;
-}
-.footer {
-  background: #191B22;
-  color: #888;
-  text-align: center;
-  padding: 22px 0 12px 0;
-  font-size: 0.99em;
-  margin-top: 40px;
-  border-top: 1px solid var(--border);
-}
-.main-title {
-  margin: 32px 0 18px 0;
-  font-size: 1.6rem;
-  color: var(--yellow);
-  text-align: center;
-}
-.table-wrapper {
-  background: var(--bg-panel);
-  padding: 24px 0;
-  border-radius: 14px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  overflow-x: auto;
-}
-.offers-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 650px;
-}
-.offers-table th, .offers-table td {
-  padding: 14px 10px;
-  text-align: left;
-}
-.offers-table th {
-  color: var(--yellow);
-  font-size: 1.05rem;
+.offer-card__dot.warn { background: var(--bybit-txt-warn);}
+.offer-card__dot.danger { background: var(--bybit-txt-danger);}
+.offer-card__name {
+  font-size: 1.06em;
   font-weight: 600;
-  border-bottom: 2px solid var(--border);
-  background: var(--bg-panel);
+  letter-spacing: 0.02em;
+  color: var(--bybit-txt-main);
 }
-.offers-table td {
-  color: var(--font-main);
-  border-bottom: 1px solid var(--border);
-  font-size: 1rem;
-  vertical-align: middle;
-}
-.seller-name {
-  font-weight: 600;
-  color: var(--yellow);
-}
-.seller-rating {
-  font-size: 0.92em;
-  color: var(--font-secondary);
-}
-.payment-method {
-  background: #2E313D;
-  color: var(--yellow);
-  border-radius: 6px;
-  padding: 3px 10px;
+.offer-card__stat {
+  margin-left: auto;
   font-size: 0.97em;
+  color: var(--bybit-txt-muted);
+  font-weight: 400;
+}
+.offer-card__time {
+  font-size: 0.9em;
+  color: var(--bybit-txt-muted);
+  margin-left: 5px;
+  font-weight: 400;
+}
+.offer-card__price {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: var(--bybit-txt-accent);
+  margin-bottom: 0;
+}
+.offer-card__usdt {
+  font-size: 1.02em;
+  color: var(--bybit-txt-muted);
+  margin-top: 2px;
+}
+.offer-card__limits {
+  font-size: 0.98em;
+  color: var(--bybit-txt-main);
+  margin-top: 2px;
+}
+.offer-card__pay {
+  font-size: 0.97em;
+  color: var(--bybit-txt-muted);
+  margin-top: 5px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.offer-card__pay span {
+  background: #204D36;
+  border-radius: 7px;
+  color: var(--bybit-txt-main);
+  padding: 3px 9px;
+  font-size: 0.95em;
   font-weight: 500;
 }
-.price {
-  font-size: 1.15em;
-  font-weight: 700;
-  color: var(--yellow);
+.offer-card__action-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 6px;
 }
-.action-btn {
-  background: var(--btn-bg);
-  color: var(--btn-text);
+.offer-card__btn {
+  background: var(--bybit-btn);
+  color: var(--bybit-green);
   border: none;
   border-radius: 8px;
-  padding: 10px 18px;
+  padding: 10px 22px;
   font-size: 1.08em;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.18s;
+  transition: background 0.18s, color 0.15s;
 }
-.action-btn:hover,
-.action-btn:focus {
-  background: var(--btn-bg-hover);
+.offer-card__btn:hover {
+  background: var(--bybit-green);
+  color: #14461c;
 }
-.deal-card {
-  background: var(--bg-panel);
-  border-radius: 12px;
-  padding: 28px 22px;
-  max-width: 430px;
-  margin: 36px auto;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  text-align: center;
-}
-.deal-card h2 { color: var(--yellow); margin-top:0; }
-.deal-info { color: var(--font-main); margin: 16px 0 24px 0; font-size:1.05em; }
-.chat-box {
-  background: #181A20;
-  border: 1px solid #393D49;
-  border-radius: 8px;
-  height: 170px;
-  overflow-y: auto;
-  padding: 10px;
-  margin-bottom: 8px;
-  font-size: 0.98em;
-  text-align: left;
-}
-.chat-input-row {
+.deal-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(20,25,20,0.90);
+  z-index: 100;
   display: flex;
-  gap: 8px;
   align-items: center;
+  justify-content: center;
 }
-#chat-input {
-  flex: 1;
-  background: #23262F;
-  color: #F5F6FA;
-  border: 1px solid #393D49;
-  border-radius: 7px;
-  padding: 8px 11px;
+.deal-modal__window {
+  background: var(--bybit-card);
+  color: var(--bybit-txt-main);
+  border-radius: 17px;
+  box-shadow: 0 2px 24px #0008;
+  padding: 0;
+  width: 98vw;
+  max-width: 400px;
+  overflow: hidden;
+  margin: 0 12px;
+}
+.deal-modal__header {
+  background: var(--bybit-dark);
+  padding: 18px 18px 12px 18px;
+  font-size: 1.11em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--bybit-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.deal-modal__timer {
+  background: #2b1916;
+  color: var(--bybit-txt-danger);
+  border-radius: 8px;
+  font-size: 1.08em;
+  font-weight: 700;
+  padding: 5px 13px;
+  margin-left: 8px;
+}
+.deal-modal__main {
+  padding: 18px 18px;
+}
+.deal-modal__box {
+  background: var(--bybit-bg);
+  border-radius: 12px;
+  padding: 13px 12px 12px 12px;
+  margin-bottom: 17px;
   font-size: 1em;
 }
-.msg {
-  margin-bottom: 7px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  word-break: break-word;
+.deal-modal__label {
+  font-size:1em;
+  color: var(--bybit-txt-muted);
+  margin-bottom: 5px;
+  font-weight: 400;
 }
-.msg-me {
-  background: #FCD535;
-  color: #23262F;
-  text-align: right;
-  margin-left: 40px;
-}
-.msg-other {
-  background: #262B38;
-  color: #F5F6FA;
-  margin-right: 40px;
-}
-.msg-sys {
-  color: #A2A5B9;
-  font-size: 0.93em;
-  background: none;
-  text-align: center;
-}
-.wallet-card {
-  background: var(--bg-panel);
-  border-radius: 12px;
-  padding: 32px 22px;
-  max-width: 360px;
-  margin: 34px auto;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  text-align: center;
-}
-.wallet-balance {
-  font-size: 1.5em;
-  color: var(--yellow);
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-.wallet-row {
+.deal-modal__row {
   display: flex;
   justify-content: space-between;
-  margin: 7px 0;
-  font-size: 1.06em;
+  margin: 5px 0;
+  font-size: 1.01em;
 }
-.dispute-card {
-  background: #23262F;
-  border-radius: 12px;
-  padding: 28px 16px;
-  max-width: 420px;
-  margin: 36px auto;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  text-align: center;
+.deal-modal__row .label {
+  color: var(--bybit-txt-muted);
 }
-.admin-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 25px;
-  background: #23262F;
-}
-.admin-table th, .admin-table td {
-  padding: 12px 9px;
-  border-bottom: 1px solid #393D49;
-  font-size: 1em;
-}
-.admin-table th {
-  color: var(--yellow);
+.deal-modal__row .value {
+  color: var(--bybit-txt-main);
   font-weight: 600;
 }
-.admin-table td {
-  color: #F5F6FA;
+.deal-modal__pay {
+  background: #1d3324;
+  border-radius: 8px;
+  padding: 12px 10px;
+  margin-bottom: 13px;
 }
-.admin-action-btn {
-  background: #FCD535;
-  color: #23262F;
+.deal-modal__pay label {
+  display: block;
+  color: var(--bybit-txt-muted);
+  font-size: 0.97em;
+  margin-bottom: 2px;
+}
+.deal-modal__pay .pay-bank {
+  font-weight: 600;
+  color: var(--bybit-yellow);
+  font-size: 1.08em;
+}
+.deal-modal__footer {
+  background: var(--bybit-dark);
+  padding: 13px 16px 13px 16px;
+  border-top: 1px solid var(--bybit-border);
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+.deal-modal__action {
+  flex: 1;
+  background: var(--bybit-yellow);
+  color: #222;
   border: none;
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: 1em;
-  font-weight: 500;
+  border-radius: 9px;
+  font-size: 1.12em;
+  font-weight: 700;
+  padding: 13px 0;
   cursor: pointer;
-  margin-right: 7px;
+  margin-right: 4px;
+  transition: background 0.13s;
 }
-.admin-action-btn.ban { background: #E85151; color: #fff; }
-@media (max-width: 800px) {
-  .container { max-width: 98vw; }
-  .header-inner { flex-direction: column; gap: 6px; height: auto; padding: 10px 0;}
-  .nav-btn { padding: 7px 8px; font-size: 0.98em;}
-  .deal-card, .wallet-card, .dispute-card { max-width:98vw; padding:18px 3vw;}
-  .chat-box { height:120px; }
-  .offers-table,
-  .offers-table thead,
-  .offers-table tbody,
-  .offers-table th,
-  .offers-table td,
-  .offers-table tr {
-    display: block;
-  }
-  .offers-table thead {
-    display: none;
-  }
-  .offers-table tr {
-    background: var(--bg-panel);
-    margin-bottom: 18px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    padding: 8px;
-  }
-  .offers-table td {
-    border: none;
-    padding: 10px 8px;
-    position: relative;
-  }
-  .offers-table td:before {
-    content: attr(data-label);
-    display: block;
-    font-size: 0.93em;
-    color: var(--yellow);
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
+.deal-modal__action:last-child {
+  margin-right: 0;
+  background: #223820;
+  color: var(--bybit-txt-main);
+  border: 1px solid var(--bybit-yellow);
 }
-@media (max-width: 450px) {
-  .logo { font-size: 1em;}
-  .main-title { font-size: 1.04rem;}
-  .admin-table th, .admin-table td { font-size: 0.92em;}
-  .action-btn, .admin-action-btn { font-size: 0.95em; padding: 8px 10px;}
+.deal-modal__action.secondary {
+  background: #223820;
+  color: var(--bybit-txt-main);
+  border: 1px solid var(--bybit-yellow);
+}
+.deal-modal__problems {
+  margin-top: 10px;
+  text-align: center;
+  color: var(--bybit-txt-accent);
+  font-size: 1em;
+}
+@media (max-width: 600px) {
+  .bybit-main { max-width: 99vw; padding: 14px 2vw 32px;}
+  .deal-modal__window { max-width: 99vw;}
 }
