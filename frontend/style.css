@@ -1,13 +1,11 @@
 :root {
   --bg-main: #14281b;
   --bg-card: #183528;
-  --bg-dark: #122618;
   --green: #2fe374;
   --yellow: #fcd535;
   --red: #ff6b6b;
   --text-main: #f2f2f2;
   --text-muted: #b7c2b5;
-  --text-accent: #fcd535;
   --border: #224930;
   --btn-bg: #204d36;
   --btn-bg-hover: #2fe374;
@@ -19,53 +17,42 @@ html,body {
   margin: 0;
   min-height: 100vh;
 }
-.header {
-  background: var(--bg-dark);
-  border-bottom: 1px solid var(--border);
-  padding: 0 0 8px 0;
-}
-.header__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 6vw 0 6vw;
-}
-.header__logo {
-  font-size: 1.45em;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  color: var(--green);
-}
-.header__nav {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.nav__btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 1.1em;
+#main { opacity:1; transition: opacity 0.25s; }
+#main.fade { opacity:0.2;}
+.toast {
+  position: fixed;
+  left: 50%; top: 16px;
+  transform: translateX(-50%) scale(0.95);
+  background: #183528;
+  color: #f2f2f2;
+  min-width: 180px;
+  max-width: 95vw;
+  padding: 13px 32px;
+  border-radius: 12px;
+  font-size: 1.08em;
   font-weight: 600;
-  padding: 8px 18px;
-  border-radius: 8px 8px 0 0;
-  cursor: pointer;
-  transition: color 0.12s, background 0.12s;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 99999;
+  box-shadow: 0 4px 18px #0007;
+  transition: opacity 0.3s, transform 0.3s;
 }
-.nav__btn.active,
-.nav__btn:hover {
-  color: var(--text-main);
-  background: var(--bg-main);
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
 }
-#lang-switch {
-  background: var(--btn-bg);
-  color: var(--text-main);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 6px 14px;
-  font-size: 1em;
+.toast-success { background: #204d36; color: #2fe374;}
+.toast-error   { background: #342023; color: #ff6b6b;}
+.toast-info    { background: #183528; color: #fcd535;}
+.profile-ref-link { cursor:pointer; text-decoration:underline dotted; }
+.profile-ref-link:hover { color: var(--green);}
+.skeleton {
+  background: linear-gradient(90deg, #183528 25%, #204d36 50%, #183528 75%);
+  background-size: 200% 100%;
+  animation: skeleton 1.2s infinite linear;
 }
-@media (max-width: 600px) {
-  .header__inner { flex-direction: column; gap: 10px; padding: 12px 2vw 0 2vw;}
-  .header__logo { font-size: 1.14em;}
+@keyframes skeleton {
+  0% { background-position: 200% 0;}
+  100% { background-position: -200% 0;}
 }
+/* Остальные стили: карточки, фильтры, таблицы, чат, сделки, кнопки и т.д. смотри в предыдущих версиях */
