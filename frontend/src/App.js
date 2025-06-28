@@ -1,4 +1,4 @@
-// --- Данные ---
+// --- Константы и данные ---
 const FIAT = [
   { code: 'RUB', name: 'Russian Ruble' }, { code: 'UAH', name: 'Ukrainian Hryvnia' }, { code: 'USD', name: 'US Dollar' },
   { code: 'KZT', name: 'Kazakh Tenge' }, { code: 'TRY', name: 'Turkish Lira' }, { code: 'EUR', name: 'Euro' }
@@ -10,7 +10,7 @@ const PAYMENT = [
   'SBP','Сбербанк','QIWI','Monobank','PUMB','Kaspi','Tinkoff','YooMoney','Raiffeisen','Payeer','WebMoney','Skrill',
   'Advcash','Alfa-Bank','VISA/MC','Revolut','Wise','ПриватБанк'
 ];
-const OFFERS = [
+const MOCK_OFFERS = [
   {
     id: 1, user: "Savak", online: true, verified: true, price: "70,96", fiat: "RUB", crypto: "USDT",
     amount: "304,7685 USDT", limits: "500 – 500 000 RUB", orders: 40, percent: 10,
@@ -39,6 +39,7 @@ let state = {
   amount: '',
   type: 'buy'
 };
+let offersCache = null;
 
 // --- Мок-пользователь ---
 const USER = {
@@ -108,6 +109,12 @@ function fadeMain(fn) {
   }, 170);
 }
 
+// --- API-заглушки (можно заменить на fetch) ---
+async function apiGetOffers() {
+  await new Promise(r=>setTimeout(r, 250));
+  return [...MOCK_OFFERS];
+}
+
 // --- Маркет (главная) ---
 function renderMarket() {
   document.getElementById('main').innerHTML = `
@@ -131,18 +138,14 @@ function renderMarket() {
 }
 window.renderMarket = renderMarket;
 
-function applyFilters() {
-  state.crypto = document.getElementById('crypto-filter').value;
-  state.fiat = document.getElementById('fiat-filter').value;
-  state.payment = document.getElementById('payment-filter').value;
-  state.amount = document.getElementById('amount-input').value;
-  renderOfferList();
-}
-window.applyFilters = applyFilters;
-
-// Список офферов (с деталями и кнопкой подробнее)
-function renderOfferList() {
-  let offers = OFFERS.filter(o =>
+async function renderOfferList() {
+  document.getElementById('offer-list').innerHTML = `
+    <div class="offer-card skeleton" style="height:96px"></div>
+    <div class="offer-card skeleton" style="height:96px"></div>
+    <div class="offer-card skeleton" style="height:96px"></div>
+  `;
+  offersCache = await apiGetOffers();
+  let offers = offersCache.filter(o =>
     o.crypto === state.crypto &&
     o.fiat === state.fiat &&
     (!state.payment || o.payMethods.includes(state.payment)) &&
@@ -174,9 +177,25 @@ function renderOfferList() {
   `).join('');
 }
 
-// --- Публичная страница объявления ---
+// --- Фильтры ---
+function applyFilters() {
+  state.crypto = document.getElementById('crypto-filter').value;
+  state.fiat = document.getElementById('fiat-filter').value;
+  state.payment = document.getElementById('payment-filter').value;
+  state.amount = document.getElementById('amount-input').value;
+  // Подсветка активных фильтров
+  ['crypto-filter','fiat-filter','payment-filter','amount-input'].forEach(id=>{
+    let el = document.getElementById(id);
+    if (el && el.value) el.classList.add('active-filter');
+    else if (el) el.classList.remove('active-filter');
+  });
+  renderOfferList();
+}
+window.applyFilters = applyFilters;
+
+// --- Оффер детально ---
 function openOfferDetails(offerId) {
-  const offer = OFFERS.find(o => o.id === offerId);
+  const offer = (offersCache || MOCK_OFFERS).find(o => o.id === offerId);
   if (!offer) {
     showToast("Объявление не найдено", "error");
     return;
@@ -224,13 +243,12 @@ function openOfferDetails(offerId) {
 }
 window.openOfferDetails = openOfferDetails;
 
-// ... (оставшаяся часть файла не изменилась, смотри предыдущий ответ для полной версии, если нужно)
 // --- Сделка ---
 let currentDeal = null;
 let chatMessages = [];
 let dealTimer = null;
 function openDeal(id) {
-  currentDeal = OFFERS.find(o => o.id === id);
+  currentDeal = (offersCache || MOCK_OFFERS).find(o => o.id === id);
   chatMessages = [
     {from: 'system', text: 'Чат сделки открыт. Не переводите деньги до согласования деталей.'}
   ];
@@ -281,6 +299,12 @@ function renderDealPage() {
       <div class="deal-dispute" id="deal-dispute" style="display:none"></div>
     </div>
   `;
+  setTimeout(() => {
+    document.getElementById('deal-chat-input')?.focus();
+    document.getElementById('deal-chat-input')?.addEventListener('keydown', (e)=>{
+      if (e.key === "Enter") dealSendMessage();
+    });
+  }, 150);
   dealStartTimer();
   renderDealChat();
 }
@@ -314,7 +338,7 @@ function renderDealChat() {
       ${m.text}
     </div>
   `).join('');
-  box.scrollTop = box.scrollHeight;
+  setTimeout(() => { box.scrollTop = box.scrollHeight; }, 50);
 }
 function dealSendMessage() {
   const input = document.getElementById('deal-chat-input');
@@ -439,7 +463,9 @@ window.profileWithdraw = profileWithdraw;
 window.profileShowKYC = profileShowKYC;
 function copyRefLink(el) {
   navigator.clipboard.writeText(el.textContent).then(() => {
+    el.classList.add('blink');
     showToast("Скопировано!", 'success');
+    setTimeout(()=>el.classList.remove('blink'), 600);
   });
 }
 window.copyRefLink = copyRefLink;
@@ -555,7 +581,16 @@ function renderRegister() {
   `;
 }
 window.renderRegister = renderRegister;
-function regSendEmailCode() { showToast("Код отправлен на email (заглушка)", "success"); document.getElementById('reg-step2').style.display = ''; }
+function regSendEmailCode() {
+  const email = document.getElementById('reg-email').value.trim();
+  if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
+    showToast("Введите корректный email!", "error");
+    document.getElementById('reg-email').focus();
+    return;
+  }
+  showToast("Код отправлен на email (заглушка)", "success");
+  document.getElementById('reg-step2').style.display = '';
+}
 function regCheckEmailCode() { showToast("Email подтверждён (заглушка)", "success"); document.getElementById('reg-step3').style.display = ''; }
 function regSendSMSCode() { showToast("SMS-код отправлен (заглушка)", "success"); document.getElementById('reg-step4').style.display = ''; }
 function regCheckSMSCode() { showToast("Телефон подтверждён (заглушка)", "success"); document.getElementById('reg-step5').style.display = ''; }
@@ -586,6 +621,12 @@ function renderSupport() {
       </div>
     </div>
   `;
+  setTimeout(() => {
+    document.getElementById('support-input')?.focus();
+    document.getElementById('support-input')?.addEventListener('keydown', (e)=>{
+      if (e.key === "Enter") sendSupportMsg();
+    });
+  }, 150);
 }
 window.renderSupport = renderSupport;
 function sendSupportMsg() {
@@ -621,28 +662,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function route(page) {
   document.querySelectorAll('.nav__btn').forEach(el=>el.classList.remove('active'));
-  switch(page) {
-    case 'market':
-      document.getElementById('nav-market').classList.add('active');
-      renderMarket();
-      break;
-    case 'orders':
-      document.getElementById('nav-orders').classList.add('active');
-      renderOrders();
-      break;
-    case 'profile':
-      document.getElementById('nav-profile').classList.add('active');
-      renderProfile();
-      break;
-    case 'support':
-      document.getElementById('nav-support').classList.add('active');
-      renderSupport();
-      break;
-    case 'register':
-      document.getElementById('nav-register').classList.add('active');
-      renderRegister();
-      break;
-  }
+  fadeMain(() => {
+    switch(page) {
+      case 'market':
+        document.getElementById('nav-market').classList.add('active'); renderMarket(); break;
+      case 'orders':
+        document.getElementById('nav-orders').classList.add('active'); renderOrders(); break;
+      case 'profile':
+        document.getElementById('nav-profile').classList.add('active'); renderProfile(); break;
+      case 'support':
+        document.getElementById('nav-support').classList.add('active'); renderSupport(); break;
+      case 'register':
+        document.getElementById('nav-register').classList.add('active'); renderRegister(); break;
+    }
+  });
 }
 window.route = route;
 
