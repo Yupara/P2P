@@ -263,3 +263,49 @@ function renderAdminNotify() {
 document.addEventListener('DOMContentLoaded', () => {
   renderAdminDashboard();
 });
+// ...оставить всё как есть
+
+// В adminStats добавим данные по дням
+const adminStats = {
+  totalCommission: 1527.4,
+  totalDeals: 211,
+  disputes: 3,
+  kycPending: 2,
+  usersActive: 44,
+  usersBlocked: 1,
+  todayCommission: 46.2,
+  dailyCommission: [
+    { date: "2025-06-28", value: 46.2 },
+    { date: "2025-06-27", value: 51.7 },
+    { date: "2025-06-26", value: 37.3 }
+  ]
+};
+
+// В Dashboard добавим график (эмуляция)
+function renderAdminDashboard() {
+  document.getElementById('admin-main').innerHTML = `
+    <div class="admin-main">
+      <div class="admin-card">
+        <h2>Дашборд</h2>
+        <div>Всего комиссий: <b>${adminStats.totalCommission} USDT</b></div>
+        <div>Сделок за всё время: <b>${adminStats.totalDeals}</b></div>
+        <div>Активных пользователей: <b>${adminStats.usersActive}</b></div>
+        <div>Заблокированных: <b>${adminStats.usersBlocked}</b></div>
+        <div>Споров сейчас: <b>${adminStats.disputes}</b></div>
+        <div>Верификаций на проверке: <b>${adminStats.kycPending}</b></div>
+        <div>Комиссия сегодня: <b>${adminStats.todayCommission} USDT</b></div>
+        <div style="margin-top:22px;">
+          <b>Комиссия по дням:</b>
+          <div class="admin-comm-chart">
+            ${adminStats.dailyCommission.map(d => `
+              <div><span style="display:inline-block;width:85px;">${d.date}</span>
+                <span style="display:inline-block;width:80px;color:var(--green);">${d.value} USDT</span>
+                <span style="display:inline-block;background:var(--green);height:10px;width:${d.value*3}px;border-radius:2px;"></span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
