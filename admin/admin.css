@@ -93,3 +93,6 @@ html,body {
   .admin-main { max-width: 99vw; padding: 18px 1vw 22px;}
   .admin-header { flex-direction:column; gap:12px; padding-left:2vw; padding-right:2vw;}
 }
+/* ...оставить всё как есть */
+.admin-comm-chart { margin-top:7px; }
+.admin-comm-chart div { margin-bottom:7px; font-size:1.02em;}
