@@ -4,48 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>P2P Обменник Bybit Style</title>
-  <link rel="stylesheet" href="bybit-style.css"/>
+  <link rel="stylesheet" href="bybit-p2p.css"/>
 </head>
 <body>
-  <div id="notifier"></div>
-  <header class="header">
-    <div class="container header-inner">
-      <div class="logo">
-        <img src="https://static.bybit.com/logo.svg" alt="Bybit" height="32"/>
-        <span>P2P</span>
-      </div>
-      <nav class="nav">
-        <button class="nav-btn active" id="tab-buy-btn" onclick="switchTab('buy')">Купить</button>
-        <button class="nav-btn" id="tab-sell-btn" onclick="switchTab('sell')">Продать</button>
-        <button class="nav-btn" id="tab-wallet-btn" onclick="showWallet()">Кошелёк</button>
-        <button class="nav-btn" id="tab-orders-btn" onclick="showOrders()">Сделки</button>
-        <button class="nav-btn" id="tab-support-btn" onclick="showSupport()">Поддержка</button>
-        <button class="nav-btn" id="tab-admin-btn" onclick="showAdmin()">Админ</button>
-      </nav>
-      <div class="header-user">
-        <span class="user-name">u/BybitDemo</span>
-        <div class="notif-bell" onclick="toggleNotif()">
-          <span class="notif-dot" id="notif-dot"></span>
-          <svg width="22" height="22" fill="none" viewBox="0 0 20 20"><path fill="#FCD535" d="M10 2a4 4 0 0 0-4 4v1.03C5.06 7.57 4.12 8.8 4.01 10.24L4 10.5v2.79l-.8 1.6A1 1 0 0 0 4 16h12a1 1 0 0 0 .8-1.61l-.8-1.6V10.5c0-1.44-.94-2.68-2-3.47V6a4 4 0 0 0-4-4Zm0 16a2 2 0 0 0 1.995-1.85L12 16h-4a2 2 0 0 0 1.995 1.85L10 18Z"/></svg>
-        </div>
-      </div>
+  <header class="bybit-header">
+    <div class="bybit-header__tabs">
+      <button id="tab-buy" class="bybit-header__tab active" onclick="switchTab('buy')">Покупка</button>
+      <button id="tab-sell" class="bybit-header__tab" onclick="switchTab('sell')">Продажа</button>
+    </div>
+    <div class="bybit-header__filter-row">
+      <select id="currency-filter">
+        <option value="USDT">USDT</option>
+        <option value="BTC">BTC</option>
+        <option value="ETH">ETH</option>
+      </select>
+      <select id="amount-filter">
+        <option value="">Сумма</option>
+        <option value="0-1000">0-1 000</option>
+        <option value="1000-10000">1 000-10 000</option>
+        <option value="10000-100000">10 000-100 000</option>
+      </select>
+      <select id="payment-filter">
+        <option value="">Все способы оплаты</option>
+        <option value="sbp">СБП</option>
+        <option value="sber">Сбербанк</option>
+        <option value="qiwi">QIWI</option>
+      </select>
+      <button id="filter-btn" onclick="applyFilters()">Фильтр</button>
     </div>
   </header>
-  <main class="container">
-    <div id="offers-section"></div>
-    <div id="deal-section" style="display:none"></div>
-    <div id="wallet-section" style="display:none"></div>
-    <div id="orders-section" style="display:none"></div>
-    <div id="support-section" style="display:none"></div>
-    <div id="admin-section" style="display:none"></div>
-    <div id="dispute-section" style="display:none"></div>
-    <div id="notif-panel" style="display:none"></div>
-  </main>
-  <footer class="footer">
-    <div class="container">
-      <span>Demo Bybit-Style P2P &copy; 2025</span>
+  <main class="bybit-main">
+    <div class="bybit-banner">
+      Попробуйте P2P HotSwap – лучшие ставки и больше ликвидности!
+      <button class="bybit-banner__btn">Узнать волью</button>
     </div>
-  </footer>
-  <script src="app.js"></script>
+    <div id="offers-list"></div>
+  </main>
+  <div id="deal-modal" class="deal-modal" style="display:none"></div>
+  <script src="bybit-p2p.js"></script>
 </body>
 </html>
