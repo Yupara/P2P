@@ -1,5 +1,5 @@
-// --- MOCK DATA AND CONSTANTS (order matches image2) ---
-const OFFERS = [
+// --- DATA ---
+const OFFERS_BUY = [
   {
     id: 1,
     user: "Savak",
@@ -55,40 +55,187 @@ const OFFERS = [
     warn: false
   }
 ];
+const OFFERS_SELL = [
+  {
+    id: 4,
+    user: "SellMaster",
+    online: true,
+    verified: true,
+    price: "70,80",
+    fiat: "RUB",
+    crypto: "USDT",
+    amount: "200,0000 USDT",
+    limits: "1000 – 200 000 RUB",
+    orders: 34,
+    percent: 12,
+    time: null,
+    payMethods: [
+      { icon: "sbp", name: "SBP" },
+      { icon: "sber", name: "Сбербанк" }
+    ],
+    warn: false
+  },
+  {
+    id: 5,
+    user: "Топ_Продаж",
+    online: false,
+    verified: false,
+    price: "71,10",
+    fiat: "RUB",
+    crypto: "USDT",
+    amount: "180,5000 USDT",
+    limits: "2000 – 150 000 RUB",
+    orders: 19,
+    percent: 8,
+    time: "20 мин.",
+    payMethods: [
+      { icon: "qiwi", name: "QIWI" }
+    ],
+    warn: true
+  }
+];
+const CRYPTOS = ["USDT", "BTC", "ETH"];
+const PAYMENTS = [
+  { value: "", label: "Все способы оплаты" },
+  { value: "SBP", label: "SBP" },
+  { value: "Сбербанк", label: "Сбербанк" },
+  { value: "QIWI", label: "QIWI" },
+  { value: "кольнение", label: "кольнение" },
+  { value: "Пиметы", label: "Пиметы" },
+  { value: "Обореол", label: "Обореол" },
+  { value: "sber", label: "Сбербанк" }
+];
 
-const FILTERS = {
+let state = {
+  tab: "buy", // buy | sell
   crypto: "USDT",
-  side: "buy"
+  amount: "",
+  payment: "",
+  view: "market", // market | deal | profile | orders | support
+  currentOffer: null,
+  chat: []
 };
 
-// --- RENDER MAIN PAGE EXACTLY LIKE IMAGE2 ---
+// --- NAVIGATION ---
+function renderNav() {
+  return `
+    <div class="nav-bar">
+      <span class="nav-btn${state.view === "market" ? " active" : ""}" onclick="goTo('market')">Маркет</span>
+      <span class="nav-btn${state.view === "orders" ? " active" : ""}" onclick="goTo('orders')">Мои сделки</span>
+      <span class="nav-btn${state.view === "profile" ? " active" : ""}" onclick="goTo('profile')">Профиль</span>
+      <span class="nav-btn${state.view === "support" ? " active" : ""}" onclick="goTo('support')">Поддержка</span>
+    </div>
+  `;
+}
+function goTo(view) {
+  state.view = view;
+  if (view === "market") renderMarket();
+  if (view === "profile") renderProfile();
+  if (view === "orders") renderOrders();
+  if (view === "support") renderSupport();
+}
+window.goTo = goTo;
+
+// --- MARKET PAGE ---
 function renderMarket() {
   document.getElementById('main').innerHTML = `
+    ${renderNav()}
     <div class="p2p-dark">
       <div class="market-tabs">
-        <span class="tab active">Покупка</span>
-        <span class="tab">Продажа</span>
+        <span class="tab${state.tab === "buy" ? " active" : ""}" onclick="switchTab('buy')">Покупка</span>
+        <span class="tab${state.tab === "sell" ? " active" : ""}" onclick="switchTab('sell')">Продажа</span>
         <span class="tab-gear"></span>
       </div>
       <div class="market-filters">
-        <button class="filter-btn">USDT <span class="arrow">&#9662;</span></button>
-        <button class="filter-btn">Сумма <span class="arrow">&#9662;</span></button>
-        <button class="filter-btn">Все сособы оплаты <span class="arrow">&#9662;</span></button>
-        <button class="filter-btn">Фильтр</button>
+        <button class="filter-btn" onclick="showSelect('crypto')">${state.crypto} <span class="arrow">&#9662;</span></button>
+        <button class="filter-btn" onclick="enterAmount()">${state.amount ? state.amount : "Сумма"} <span class="arrow">&#9662;</span></button>
+        <button class="filter-btn" onclick="showSelect('payment')">${getPaymentLabel(state.payment)} <span class="arrow">&#9662;</span></button>
+        <button class="filter-btn" onclick="applyFilters()">Фильтр</button>
       </div>
       <div class="market-banner">
         <span>Попробуйте P2P HotSwap – лучшие ставки и больше ликвидности!</span>
         <button class="banner-btn">Узнать волью</button>
       </div>
       <div class="offer-list">
-        ${OFFERS.map(offer => renderOfferCard(offer)).join('')}
+        ${getFilteredOffers().map(offer => renderOfferCard(offer)).join('')}
       </div>
     </div>
+    <div id="custom-select-modal"></div>
+    <div id="amount-modal"></div>
   `;
 }
+window.renderMarket = renderMarket;
 
+function switchTab(tab) {
+  state.tab = tab;
+  renderMarket();
+}
+window.switchTab = switchTab;
+
+function showSelect(type) {
+  if (type === "crypto") {
+    document.getElementById("custom-select-modal").innerHTML = `
+      <div class="modal-bg" onclick="closeModal('custom-select-modal')"></div>
+      <div class="modal-window">
+        ${CRYPTOS.map(c => `<div class="modal-option" onclick="selectCrypto('${c}')">${c}</div>`).join('')}
+      </div>
+    `;
+  } else if (type === "payment") {
+    document.getElementById("custom-select-modal").innerHTML = `
+      <div class="modal-bg" onclick="closeModal('custom-select-modal')"></div>
+      <div class="modal-window">
+        ${PAYMENTS.map(p => `<div class="modal-option" onclick="selectPayment('${p.value}')">${p.label}</div>`).join('')}
+      </div>
+    `;
+  }
+}
+function selectCrypto(c) {
+  state.crypto = c;
+  closeModal("custom-select-modal");
+  renderMarket();
+}
+window.selectCrypto = selectCrypto;
+function selectPayment(p) {
+  state.payment = p;
+  closeModal("custom-select-modal");
+  renderMarket();
+}
+window.selectPayment = selectPayment;
+function closeModal(id) {
+  document.getElementById(id).innerHTML = "";
+}
+function enterAmount() {
+  document.getElementById("amount-modal").innerHTML = `
+    <div class="modal-bg" onclick="closeModal('amount-modal')"></div>
+    <div class="modal-window">
+      <input id="amount-input-modal" style="width:90%;font-size:24px;padding:8px;border-radius:7px;margin-bottom:16px;" type="number" placeholder="Введите сумму" value="${state.amount ? state.amount : ""}">
+      <button style="padding:6px 22px;font-size:20px;" onclick="setAmount()">OK</button>
+    </div>
+  `;
+  setTimeout(() => { document.getElementById('amount-input-modal').focus(); }, 50);
+}
+function setAmount() {
+  state.amount = document.getElementById("amount-input-modal").value;
+  closeModal("amount-modal");
+  renderMarket();
+}
+function getPaymentLabel(val) {
+  return PAYMENTS.find(p => p.value === val)?.label || "Все способы оплаты";
+}
+function applyFilters() {
+  renderMarket();
+}
+function getFilteredOffers() {
+  let arr = state.tab === "buy" ? OFFERS_BUY : OFFERS_SELL;
+  return arr.filter(o =>
+    o.crypto === state.crypto &&
+    (!state.amount || parseFloat(o.amount) >= parseFloat(state.amount)) &&
+    (!state.payment || o.payMethods.find(pm => pm.name === state.payment || pm.icon === state.payment))
+  );
+}
+
+// --- OFFER CARD ---
 function renderOfferCard(offer) {
-  // Icons as SVG inline for accessibility and to match the app look
   const statusDot = offer.warn
     ? `<span class="offer-icon status-dot yellow"></span>`
     : `<span class="offer-icon status-dot green"></span>`;
@@ -99,7 +246,7 @@ function renderOfferCard(offer) {
     `<span class="offer-method">${methodIcon(m.icon)} ${m.name}</span>`
   ).join(" | ");
   return `
-    <div class="offer-card${offer.warn ? " warn" : ""}">
+    <div class="offer-card${offer.warn ? " warn" : ""}" onclick="openDeal(${offer.id})" style="cursor:pointer;">
       <div class="offer-header">
         ${warnIcon}${statusDot}
         <span class="offer-username">${offer.user}</span>
@@ -110,12 +257,11 @@ function renderOfferCard(offer) {
       <div class="offer-amount">Количество <span>${offer.amount}</span></div>
       <div class="offer-limits">Лимиты <span>${offer.limits}</span></div>
       ${methods ? `<div class="offer-methods">${methods}</div>` : ""}
-      <div class="offer-cta"><button class="buy-btn">Покупка</button></div>
+      <div class="offer-cta"><button class="buy-btn" onclick="event.stopPropagation(); openDeal(${offer.id})">${state.tab === "buy" ? "Покупка" : "Продажа"}</button></div>
     </div>
   `;
 }
 function methodIcon(name) {
-  // Only minimal SVGs, but you can expand as needed
   if (name === "sbp")
     return `<svg width="20" height="20" viewBox="0 0 20 20" style="vertical-align:middle"><circle cx="10" cy="10" r="8" fill="#38cc6c"/></svg>`;
   if (name === "kol")
@@ -124,179 +270,274 @@ function methodIcon(name) {
     return `<svg width="20" height="20" viewBox="0 0 20 20" style="vertical-align:middle"><circle cx="10" cy="10" r="8" fill="#e2c84c"/></svg>`;
   if (name === "oboreol")
     return `<svg width="20" height="20" viewBox="0 0 20 20" style="vertical-align:middle"><circle cx="10" cy="10" r="8" fill="#b0b3c6"/></svg>`;
+  if (name === "sber")
+    return `<svg width="20" height="20" viewBox="0 0 20 20" style="vertical-align:middle"><circle cx="10" cy="10" r="8" fill="#50c878"/></svg>`;
+  if (name === "qiwi")
+    return `<svg width="20" height="20" viewBox="0 0 20 20" style="vertical-align:middle"><circle cx="10" cy="10" r="8" fill="#ffb800"/></svg>`;
   return "";
 }
 
-// --- BASIC DARK STYLES (matches image2) ---
-const style = document.createElement('style');
-style.innerHTML = `
-.p2p-dark {
-  background: #183528;
-  min-height: 100vh;
-  color: #ddeee2;
-  font-family: 'SF Pro Display', 'Roboto', Arial, sans-serif;
-  padding: 0;
+// --- DEAL PAGE (DEAL + CHAT + BUTTONS) ---
+function openDeal(id) {
+  let arr = state.tab === "buy" ? OFFERS_BUY : OFFERS_SELL;
+  const offer = arr.find(o => o.id === id);
+  state.currentOffer = offer;
+  state.view = "deal";
+  state.chat = [
+    {from: 'system', text: 'Чат сделки открыт. Не переводите деньги до согласования деталей.'}
+  ];
+  renderDeal();
 }
-.market-tabs {
-  display: flex;
-  gap: 40px;
-  font-size: 32px;
-  font-weight: 600;
-  margin: 0 0 24px 0;
-  padding: 28px 0 0 24px;
+window.openDeal = openDeal;
+
+function renderDeal() {
+  const offer = state.currentOffer;
+  document.getElementById('main').innerHTML = `
+    ${renderNav()}
+    <div class="p2p-dark">
+      <div class="deal-header">
+        <button onclick="backToMarket()" class="back-btn">&#8592; Назад</button>
+        <span class="deal-title">${state.tab === "buy" ? "Покупка" : "Продажа"} ${offer.crypto} / ${offer.fiat}</span>
+      </div>
+      <div class="offer-card deal-offer-card">
+        <div class="offer-header">
+          ${offer.warn ? `<span class="offer-icon warn-ico">&#9888;</span>` : ""}
+          ${offer.warn
+            ? `<span class="offer-icon status-dot yellow"></span>`
+            : `<span class="offer-icon status-dot green"></span>`}
+          <span class="offer-username">${offer.user}</span>
+          ${offer.time ? `<span class="offer-time">${offer.time}</span>` : ""}
+          <span class="offer-orders">${offer.orders} Ордеров | ${offer.percent} %</span>
+        </div>
+        <div class="offer-price">₽ ${offer.price}</div>
+        <div class="offer-amount">Количество <span>${offer.amount}</span></div>
+        <div class="offer-limits">Лимиты <span>${offer.limits}</span></div>
+        ${offer.payMethods.length ? `<div class="offer-methods">${offer.payMethods.map(m=>`${methodIcon(m.icon)} ${m.name}`).join(" | ")}</div>` : ""}
+      </div>
+      <div class="deal-status" id="deal-status">Ожидается оплата от покупателя</div>
+      <div class="deal-actions">
+        <button class="deal-btn" onclick="dealPaid()">Я оплатил</button>
+        <button class="deal-btn" onclick="dealOpenDispute()">Открыть спор</button>
+      </div>
+      <div class="deal-chat">
+        <div class="deal-chat-title">Чат сделки</div>
+        <div class="deal-chat-messages" id="deal-chat-messages"></div>
+        <div class="deal-chat-input-row">
+          <input id="deal-chat-input" type="text" placeholder="Введите сообщение..." />
+          <button onclick="dealSendMessage()">Отправить</button>
+        </div>
+      </div>
+      <div class="deal-dispute" id="deal-dispute" style="display:none"></div>
+    </div>
+  `;
+  setTimeout(() => {
+    document.getElementById('deal-chat-input')?.focus();
+    document.getElementById('deal-chat-input')?.addEventListener('keydown', (e)=>{
+      if (e.key === "Enter") dealSendMessage();
+    });
+  }, 150);
+  renderDealChat();
 }
-.tab {
-  color: #8ca899;
-  opacity: 0.7;
-  cursor: pointer;
+function backToMarket() {
+  state.currentOffer = null;
+  state.view = "market";
+  renderMarket();
 }
-.tab.active {
-  color: #ddeee2;
-  opacity: 1;
-  border-bottom: 2.5px solid #ddeee2;
+function renderDealChat() {
+  const box = document.getElementById('deal-chat-messages');
+  if (!box) return;
+  box.innerHTML = state.chat.map(m => `
+    <div class="deal-chat-msg ${m.from === 'me' ? 'me' : m.from === 'system' ? 'sys' : 'other'}">
+      ${m.from === 'me' ? "Вы: " : m.from === 'system' ? "" : "Собеседник: "}
+      ${m.text}
+    </div>
+  `).join('');
+  setTimeout(() => { box.scrollTop = box.scrollHeight; }, 50);
 }
-.tab-gear {
-  margin-left: auto;
-  margin-right: 28px;
-  width: 32px;
-  height: 32px;
-  background: none;
+function dealSendMessage() {
+  const input = document.getElementById('deal-chat-input');
+  if (!input.value.trim()) return;
+  state.chat.push({from: 'me', text: input.value});
+  state.chat.push({from: 'other', text: 'Спасибо, принято (бот-ответ)'});
+  renderDealChat();
+  input.value = '';
 }
-.market-filters {
-  display: flex;
-  gap: 8px;
-  margin: 0 0 30px 24px;
+window.dealSendMessage = dealSendMessage;
+function dealPaid() {
+  document.getElementById('deal-status').textContent = "Ожидается подтверждение продавца";
+  state.chat.push({from: 'system', text: 'Ожидание подтверждения продавца. Средства находятся в эскроу.'});
+  renderDealChat();
 }
-.filter-btn {
-  background: #214032;
-  color: #ddeee2;
-  border: none;
-  border-radius: 10px;
-  padding: 9px 28px;
-  font-size: 19px;
-  margin-right: 2px;
-  cursor: pointer;
+window.dealPaid = dealPaid;
+function dealOpenDispute() {
+  document.getElementById('deal-dispute').style.display = '';
+  document.getElementById('deal-dispute').innerHTML = `
+    <div class="deal-dispute-form">
+      <b>Причина спора</b>
+      <textarea id="dispute-text" rows="4" style="width:98%;border-radius:7px;"></textarea>
+      <div>
+        <label>Приложите скриншоты/видео</label>
+        <input type="file" multiple accept="image/*,video/*" />
+      </div>
+      <button onclick="dealSubmitDispute()">Отправить спор</button>
+      <button onclick="closeDealDispute()" style="margin-left:12px;">Отмена</button>
+    </div>
+  `;
 }
-.arrow {
-  font-size: 13px;
-  margin-left: 8px;
+window.dealOpenDispute = dealOpenDispute;
+function dealSubmitDispute() {
+  document.getElementById('deal-status').textContent = "Спор рассматривается модератором. Средства заморожены.";
+  state.chat.push({from: 'system', text: 'Спор открыт. Средства заморожены до решения.'});
+  renderDealChat();
+  document.getElementById('deal-dispute').style.display = 'none';
 }
-.market-banner {
-  background: #224332;
-  border-radius: 14px;
-  margin: 0 24px 32px 24px;
-  padding: 24px;
-  font-size: 26px;
-  font-weight: 600;
-  color: #ddeee2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+window.dealSubmitDispute = dealSubmitDispute;
+function closeDealDispute() {
+  document.getElementById('deal-dispute').style.display = 'none';
 }
-.banner-btn {
-  background: #214032;
-  color: #9edbb6;
-  border-radius: 10px;
-  border: none;
-  padding: 13px 32px;
-  font-size: 20px;
-  font-weight: 600;
-  cursor: pointer;
+
+// --- PROFILE PAGE ---
+function renderProfile() {
+  document.getElementById('main').innerHTML = `
+    ${renderNav()}
+    <div class="p2p-dark">
+      <div class="profile-card">
+        <div class="profile-main">
+          <div class="profile-avatar"></div>
+          <div>
+            <div class="profile-name">DemoUser</div>
+            <div class="profile-kyc"><span class="kyc-approved">KYC: одобрено</span></div>
+          </div>
+        </div>
+        <div class="profile-balances">
+          <div><b>USDT:</b> 1200.00</div>
+          <div><b>BTC:</b> 0.05</div>
+          <div><b>RUB:</b> 80 000</div>
+        </div>
+        <div class="profile-section">
+          <h3>Мои сделки</h3>
+          <table class="profile-table">
+            <thead><tr>
+              <th>Дата</th>
+              <th>Тип</th>
+              <th>Крипта</th>
+              <th>Фиат</th>
+              <th>Количество</th>
+              <th>Цена</th>
+              <th>Статус</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>2025-06-27</td><td>Покупка</td><td>USDT</td><td>RUB</td><td>200</td><td>71,00</td><td>Успешно</td></tr>
+              <tr><td>2025-06-15</td><td>Продажа</td><td>BTC</td><td>RUB</td><td>0.01</td><td>6 400 000</td><td>Успешно</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="profile-section">
+          <h3>Реферальная программа</h3>
+          <div>Ваша реф. ссылка: <span class="profile-ref-link">https://yourp2p.site/?ref=DEMO</span></div>
+          <div>Заработано всего: <b>7.25 USDT</b></div>
+          <div>
+            <b>Ваши рефералы:</b>
+            <ul>
+              <li>friend1: +1.5 USDT</li>
+              <li>friend2: +0.6 USDT</li>
+            </ul>
+          </div>
+        </div>
+        <div class="profile-section">
+          <h3>Уведомления</h3>
+          <ul>
+            <li>2025-06-27: Ваш аккаунт подтверждён!</li>
+            <li>2025-06-26: Сделка завершена успешно.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  `;
 }
-.offer-list {
-  margin: 0 0 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
+window.renderProfile = renderProfile;
+
+// --- ORDERS PAGE ---
+function renderOrders() {
+  document.getElementById('main').innerHTML = `
+    ${renderNav()}
+    <div class="p2p-dark">
+      <div class="orders-card">
+        <h2>Мои сделки</h2>
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Тип</th>
+              <th>Крипта</th>
+              <th>Фиат</th>
+              <th>Количество</th>
+              <th>Цена</th>
+              <th>Статус</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-06-27</td><td>Покупка</td><td>USDT</td><td>RUB</td><td>200</td><td>71,00</td><td>Успешно</td>
+            </tr>
+            <tr>
+              <td>2025-06-15</td><td>Продажа</td><td>BTC</td><td>RUB</td><td>0.01</td><td>6 400 000</td><td>Успешно</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
 }
-.offer-card {
-  background: #1b3b2b;
-  border-radius: 16px;
-  margin: 0 24px;
-  padding: 24px 24px 20px 24px;
-  box-shadow: 0 2px 12px #0000000a;
-  font-size: 23px;
-  position: relative;
+window.renderOrders = renderOrders;
+
+// --- SUPPORT PAGE ---
+function renderSupport() {
+  document.getElementById('main').innerHTML = `
+    ${renderNav()}
+    <div class="p2p-dark">
+      <div class="support-card">
+        <h2>Поддержка</h2>
+        <div class="support-chat" id="support-chat">
+          <div class="support-msg bot">Здравствуйте! Чем могу помочь?</div>
+        </div>
+        <div class="support-chat-input-row">
+          <input id="support-input" type="text" placeholder="Ваш вопрос..." />
+          <button onclick="sendSupportMsg()">Отправить</button>
+        </div>
+        <div style="margin-top:14px;">
+          <b>Если нужна помощь оператора, напишите “оператор” — и мы уведомим администратора.</b>
+          <div>Также вы можете написать напрямую в <a href="https://t.me/p2pp2p_p2p" target="_blank">Telegram @p2pp2p_p2p</a></div>
+        </div>
+      </div>
+    </div>
+  `;
+  setTimeout(() => {
+    document.getElementById('support-input')?.focus();
+    document.getElementById('support-input')?.addEventListener('keydown', (e)=>{
+      if (e.key === "Enter") sendSupportMsg();
+    });
+  }, 150);
 }
-.offer-card.warn { background: #263b25; }
-.offer-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 8px;
+window.renderSupport = renderSupport;
+function sendSupportMsg() {
+  const input = document.getElementById('support-input');
+  if (!input.value.trim()) return;
+  const chat = document.getElementById('support-chat');
+  chat.innerHTML += `<div class="support-msg user">${input.value}</div>`;
+  if (/оператор|operator/i.test(input.value)) {
+    chat.innerHTML += `<div class="support-msg bot">Ваш запрос передан оператору. Ожидайте ответа администратора.</div>`;
+  } else if (/мошенник|fraud|scam/i.test(input.value)) {
+    chat.innerHTML += `<div class="support-msg bot">Если вы подозреваете мошенничество — средства будут заморожены до разбирательства. Опишите проблему подробнее.</div>`;
+  } else {
+    chat.innerHTML += `<div class="support-msg bot">Спасибо за обращение! Мы обработаем ваш запрос.</div>`;
+  }
+  input.value = '';
+  chat.scrollTop = chat.scrollHeight;
 }
-.offer-icon.status-dot.green {
-  display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: #4ee47e; margin-right: 6px;
-}
-.offer-icon.status-dot.yellow {
-  display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: #ffd34e; margin-right: 6px;
-}
-.offer-icon.warn-ico {
-  color: #ffd34e;
-  font-size: 24px;
-  margin-right: 6px;
-  vertical-align: middle;
-}
-.offer-username {
-  color: #ddeee2;
-  font-weight: 600;
-  margin-right: 4px;
-}
-.offer-time {
-  margin-left: 6px;
-  color: #d7dba3;
-  font-size: 19px;
-  font-weight: 400;
-}
-.offer-orders {
-  margin-left: auto;
-  color: #8ca899;
-  font-size: 19px;
-  font-weight: 400;
-}
-.offer-price {
-  font-size: 32px;
-  color: #ddeee2;
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-.offer-amount, .offer-limits {
-  font-size: 21px;
-  color: #b0c7b7;
-  margin-bottom: 2px;
-}
-.offer-amount span, .offer-limits span { color: #ddeee2; }
-.offer-methods {
-  font-size: 19px;
-  color: #9edbb6;
-  margin-bottom: 8px;
-}
-.offer-method {
-  margin-right: 8px;
-  color: #8ca899;
-}
-.buy-btn {
-  background: #214032;
-  color: #9edbb6;
-  border-radius: 10px;
-  border: none;
-  padding: 12px 38px;
-  font-size: 22px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 12px;
-  float: right;
-}
-@media (max-width: 600px) {
-  .market-tabs, .market-filters, .market-banner, .offer-card { margin-left: 0 !important; }
-  .market-banner, .offer-card { margin-right: 0 !important; }
-  .offer-card { padding: 20px 8px 16px 8px; font-size: 17px; }
-  .market-banner { padding: 16px; font-size: 19px; }
-}
-`;
-document.head.appendChild(style);
+window.sendSupportMsg = sendSupportMsg;
+
+// --- STYLES (as before, add your style here or in a separate CSS) ---
 
 // --- INIT ---
-document.addEventListener('DOMContentLoaded', renderMarket);
+document.addEventListener('DOMContentLoaded', () => renderMarket());
