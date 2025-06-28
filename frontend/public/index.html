@@ -2,30 +2,12 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>P2P Обменник</title>
-  <link rel="stylesheet" href="../common/style.css"/>
-  <link rel="stylesheet" href="app.css"/>
+  <title>P2P КриптоМаркет</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header class="header">
-    <div class="header__inner">
-      <div class="header__logo">P2P Exchange</div>
-      <div class="header__nav">
-        <button class="nav__btn active" id="nav-market" onclick="route('market')"><span data-i18n="market">Market</span></button>
-        <button class="nav__btn" id="nav-orders" onclick="route('orders')"><span data-i18n="my_orders">My Orders</span></button>
-        <button class="nav__btn" id="nav-profile" onclick="route('profile')"><span data-i18n="profile">Profile</span></button>
-        <button class="nav__btn" id="nav-support" onclick="route('support')"><span data-i18n="support">Support</span></button>
-        <select id="lang-switch" onchange="setLang(this.value)">
-          <option value="ru">RU</option>
-          <option value="en">EN</option>
-        </select>
-      </div>
-    </div>
-  </header>
-  <main id="main"></main>
-  <div id="modal"></div>
-  <script src="../common/i18n.js"></script>
+  <div id="main"></div>
   <script src="app.js"></script>
 </body>
 </html>
