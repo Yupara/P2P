@@ -1,129 +1,99 @@
-// ...Оставь предыдущий код без изменений (главная, фильтры, сделки, профиль и т.д.)
+// ...оставить предыдущий код без изменений
 
-// --- Регистрация и KYC ---
-function renderRegister() {
+// --- История сделок пользователя ---
+function renderOrders() {
   document.getElementById('main').innerHTML = `
     <div class="main">
-      <div class="reg-card">
-        <h2>Регистрация</h2>
-        <div class="reg-step" id="reg-step1">
-          <input id="reg-email" type="email" placeholder="Email" autocomplete="email" />
-          <button onclick="regSendEmailCode()">Получить код</button>
-        </div>
-        <div class="reg-step" id="reg-step2" style="display:none;">
-          <input id="reg-email-code" type="text" placeholder="Код из e-mail" />
-          <button onclick="regCheckEmailCode()">Подтвердить</button>
-        </div>
-        <div class="reg-step" id="reg-step3" style="display:none;">
-          <input id="reg-phone" type="tel" placeholder="Телефон" autocomplete="tel"/>
-          <button onclick="regSendSMSCode()">Получить SMS-код</button>
-        </div>
-        <div class="reg-step" id="reg-step4" style="display:none;">
-          <input id="reg-sms-code" type="text" placeholder="SMS-код" />
-          <button onclick="regCheckSMSCode()">Подтвердить</button>
-        </div>
-        <div class="reg-step" id="reg-step5" style="display:none;">
-          <label>Загрузите фото паспорта для верификации:</label>
-          <input id="reg-passport" type="file" accept="image/*" />
-          <button onclick="regUploadPassport()">Отправить на проверку</button>
-        </div>
-        <div class="reg-step" id="reg-step6" style="display:none;">
-          <b>Ваша заявка на верификацию отправлена</b>
-          <div>Ожидайте подтверждения модератором.</div>
+      <div class="orders-card">
+        <h2>${i18n('my_orders')}</h2>
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>${i18n('date')}</th>
+              <th>${i18n('type')}</th>
+              <th>${i18n('crypto')}</th>
+              <th>${i18n('fiat')}</th>
+              <th>${i18n('amount')}</th>
+              <th>${i18n('price')}</th>
+              <th>${i18n('status')}</th>
+              <th>${i18n('actions')}</th>
+            </tr>
+          </thead>
+          <tbody id="orders-table-body">
+            ${USER.deals.map((deal, idx) => `
+              <tr>
+                <td>${deal.date}</td>
+                <td>${i18n(deal.type)}</td>
+                <td>${deal.crypto}</td>
+                <td>${deal.fiat}</td>
+                <td>${deal.amount}</td>
+                <td>${deal.price}</td>
+                <td id="deal-status-${idx}">${i18n(deal.result)}</td>
+                <td>
+                  ${deal.result !== "dispute"
+                    ? `<button onclick="openOrderDispute(${idx})">${i18n('open_dispute')}</button>`
+                    : `<span class="dispute-opened">${i18n('dispute_opened')}</span>`
+                  }
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div id="order-dispute-modal"></div>
+    </div>
+  `;
+}
+window.renderOrders = renderOrders;
+
+// Открытие спора по сделке
+function openOrderDispute(idx) {
+  document.getElementById('order-dispute-modal').innerHTML = `
+    <div class="order-dispute-modal">
+      <div class="order-dispute-window">
+        <h3>${i18n('open_dispute')}</h3>
+        <div class="dispute-form">
+          <label>${i18n('dispute_reason')}</label>
+          <textarea id="order-dispute-reason" rows="3" style="width:96%"></textarea>
+          <label style="margin-top:7px;">${i18n('attach_proof')}</label>
+          <input type="file" id="order-dispute-files" multiple accept="image/*,video/*" />
+          <div style="margin:12px 0 0 0;">
+            <button onclick="submitOrderDispute(${idx})">${i18n('send_dispute')}</button>
+            <button onclick="closeOrderDisputeModal()" style="margin-left:14px">${i18n('cancel')}</button>
+          </div>
         </div>
       </div>
     </div>
   `;
 }
-window.renderRegister = renderRegister;
-function regSendEmailCode() {
-  alert("Код отправлен на email (заглушка)");
-  document.getElementById('reg-step2').style.display = '';
-}
-function regCheckEmailCode() {
-  alert("Email подтверждён (заглушка)");
-  document.getElementById('reg-step3').style.display = '';
-}
-function regSendSMSCode() {
-  alert("SMS-код отправлен (заглушка)");
-  document.getElementById('reg-step4').style.display = '';
-}
-function regCheckSMSCode() {
-  alert("Телефон подтверждён (заглушка)");
-  document.getElementById('reg-step5').style.display = '';
-}
-function regUploadPassport() {
-  alert("Документ отправлен на модерацию (заглушка)");
-  document.getElementById('reg-step6').style.display = '';
-}
-window.regSendEmailCode = regSendEmailCode;
-window.regCheckEmailCode = regCheckEmailCode;
-window.regSendSMSCode = regSendSMSCode;
-window.regCheckSMSCode = regCheckSMSCode;
-window.regUploadPassport = regUploadPassport;
+window.openOrderDispute = openOrderDispute;
 
-// --- Поддержка (бот + Telegram) ---
-function renderSupport() {
-  document.getElementById('main').innerHTML = `
-    <div class="main">
-      <div class="support-card">
-        <h2>Поддержка</h2>
-        <div class="support-chat" id="support-chat">
-          <div class="support-msg bot">Здравствуйте! Чем могу помочь?</div>
-        </div>
-        <div class="support-chat-input-row">
-          <input id="support-input" type="text" placeholder="Ваш вопрос..." />
-          <button onclick="sendSupportMsg()">Отправить</button>
-        </div>
-        <div style="margin-top:14px;">
-          <b>Если нужна помощь оператора, напишите “оператор” — и мы уведомим администратора.</b>
-          <div>Также вы можете написать напрямую в <a href="https://t.me/p2pp2p_p2p" target="_blank">Telegram @p2pp2p_p2p</a></div>
-        </div>
-      </div>
-    </div>
-  `;
+function closeOrderDisputeModal() {
+  document.getElementById('order-dispute-modal').innerHTML = '';
 }
-window.renderSupport = renderSupport;
+window.closeOrderDisputeModal = closeOrderDisputeModal;
 
-function sendSupportMsg() {
-  const input = document.getElementById('support-input');
-  if (!input.value.trim()) return;
-  const chat = document.getElementById('support-chat');
-  chat.innerHTML += `<div class="support-msg user">${input.value}</div>`;
-  if (/оператор|operator/i.test(input.value)) {
-    chat.innerHTML += `<div class="support-msg bot">Ваш запрос передан оператору. Ожидайте ответа администратора.</div>`;
-    alert("Уведомление админу: пользователь запросил оператора!");
-  } else if (/мошенник|fraud|scam/i.test(input.value)) {
-    chat.innerHTML += `<div class="support-msg bot">Если вы подозреваете мошенничество — средства будут заморожены до разбирательства. Опишите проблему подробнее.</div>`;
-  } else {
-    chat.innerHTML += `<div class="support-msg bot">Спасибо за обращение! Мы обработаем ваш запрос.</div>`;
-  }
-  input.value = '';
-  chat.scrollTop = chat.scrollHeight;
+// Отправка спора по сделке
+function submitOrderDispute(idx) {
+  // В реальном приложении - отправить данные на сервер
+  USER.deals[idx].result = "dispute";
+  closeOrderDisputeModal();
+  renderOrders();
+  alert("Ваш спор отправлен на рассмотрение. Средства заморожены.");
 }
-window.sendSupportMsg = sendSupportMsg;
+window.submitOrderDispute = submitOrderDispute;
 
-// --- Рефералка и уведомления (пополнение/вывод с реф-баланса, уведомления) ---
-// В профиле уже есть блок рефералки и уведомлений, добавим возможность "вывести"
-function profileWithdraw() {
-  alert(`Вывести с основного или реферального баланса (заглушка).\n\nРеферальный баланс: ${USER.totalEarned.toFixed(2)} USDT`);
-}
-window.profileWithdraw = profileWithdraw;
-
-// --- Расширяем меню: добавить регистрацию и вход ---
-document.querySelector('.header__nav').innerHTML +=
-  `<button class="nav__btn" id="nav-register" onclick="route('register')">Регистрация</button>`;
-
+// --- Роутинг: подключаем renderOrders ---
 function route(page) {
-  document.querySelectorAll('.nav__btn').forEach(el=>el.classList.remove('active'));
-  switch(page) {
+  document.querySelectorAll('.nav__btn').forEach(el => el.classList.remove('active'));
+  switch (page) {
     case 'market':
       document.getElementById('nav-market').classList.add('active');
       renderMarket();
       break;
     case 'orders':
       document.getElementById('nav-orders').classList.add('active');
-      document.getElementById('main').innerHTML = `<div class="main">Здесь будет список ваших сделок</div>`;
+      renderOrders();
       break;
     case 'profile':
       document.getElementById('nav-profile').classList.add('active');
@@ -141,31 +111,39 @@ function route(page) {
 }
 window.route = route;
 
-// --- CSS для новых разделов ---
-const extraCSS = `
-.reg-card, .support-card {
-  background: var(--bg-card);
-  border-radius: 14px;
-  padding: 18px 18px 14px 18px;
-  max-width: 400px;
-  margin: 30px auto 0 auto;
+// --- i18n дополнить ---
+function i18n(key) {
+  const ru = {
+    // ...все предыдущие
+    my_orders: 'Мои сделки',
+    actions: 'Действия',
+    cancel: 'Отмена',
+    dispute_opened: 'Спор открыт',
+    dispute: 'Спор'
+  };
+  return ru[key] || key;
 }
-.reg-card h2, .support-card h2 { color: var(--yellow); margin-bottom:14px; }
-.reg-step { margin-bottom: 10px; }
-.reg-step input { background:var(--bg-main);color:var(--text-main);border:1px solid var(--border);border-radius:6px;padding:7px 9px;margin-bottom:7px;width:95%; }
-.reg-step button { background:var(--btn-bg);color:var(--green);border:none;border-radius:7px;padding:7px 17px;font-weight:600;cursor:pointer;}
-.reg-step button:hover { background:var(--green);color:#183528;}
-.support-chat { background:#12281a; border-radius:7px; padding:7px; max-height:120px; overflow-y:auto; font-size:0.98em; margin-bottom:7px;}
-.support-msg { margin-bottom:6px; }
-.support-msg.user { color:var(--green); text-align:right;}
-.support-msg.bot { color:var(--yellow); text-align:left;}
-.support-chat-input-row { display:flex; gap:7px;}
-#support-input { flex:1; background:var(--bg-main); color:var(--text-main); border:1px solid var(--border); border-radius:6px; padding:7px 9px;}
+
+// --- CSS для истории сделок и спора ---
+const ordersCSS = `
+.orders-card { background:var(--bg-card);border-radius:14px;padding:18px 14px 13px 14px; }
+.orders-card h2 { color:var(--yellow);margin-bottom:14px;}
+.orders-table { width:100%; border-collapse:collapse; }
+.orders-table th, .orders-table td { padding:7px 6px; border-bottom:1px solid var(--border);}
+.orders-table th { color:var(--yellow);}
+.orders-table td { color:var(--text-main);}
+.orders-table button { background:var(--btn-bg); color:var(--green); border:none; border-radius:6px; padding:6px 14px; font-weight:600; cursor:pointer;}
+.orders-table button:hover { background:var(--green); color:#183528;}
+.dispute-opened { color:var(--red); font-weight:600;}
+.order-dispute-modal { position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(24,46,40,0.95);display:flex;align-items:center;justify-content:center;}
+.order-dispute-window { background:var(--bg-card);border-radius:13px;padding:20px 18px;min-width:280px;max-width:350px;}
+.order-dispute-window h3 {margin-top:0;}
+.dispute-form textarea { width:97%; border-radius:7px; min-height:38px; margin-bottom:9px;}
 `;
-if (!document.getElementById('extra-css')) {
+if (!document.getElementById('orders-css')) {
   const s = document.createElement('style');
-  s.id = 'extra-css';
-  s.innerHTML = extraCSS;
+  s.id = 'orders-css';
+  s.innerHTML = ordersCSS;
   document.head.appendChild(s);
 }
 
