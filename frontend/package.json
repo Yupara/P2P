@@ -1,14 +1,9 @@
 {
-  "name": "frontend",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.23.1"
-  },
+  "name": "my-app",
+  ...
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"
-  }
+  },
+  ...
 }
