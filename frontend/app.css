@@ -1,0 +1,17 @@
+/* src/App.css */
+/* Базовые стили и тёмная тема */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dark-theme {
+  background-color: #0a0f1c;
+  color: #ffffff;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
