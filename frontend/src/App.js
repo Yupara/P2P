@@ -1,33 +1,55 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Home from "./routes/Home";
-import AdsList from "./routes/AdsList";
-import Auth from "./routes/Auth";
-import Profile from "./routes/Profile";
-import CreateAd from "./routes/CreateAd";
-import DealChat from "./routes/DealChat";
-import Dispute from "./routes/Dispute";
-import AdminPanel from "./routes/AdminPanel";
-import Wallet from "./routes/Wallet";
-import Notifications from "./routes/Notifications";
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import CreateOrder from './pages/CreateOrder';
+import Orders from './pages/Orders';
+import Trade from './pages/Trade';
+import Profile from './pages/Profile';
+import Admin from './pages/Admin';
+import NotFound from './pages/NotFound';
+import './App.css'; // тёмная тема, базовые стили
 
-export default function App() {
+function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/ads" element={<AdsList />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/create-ad" element={<CreateAd />} />
-        <Route path="/deal/:id" element={<DealChat />} />
-        <Route path="/dispute/:id" element={<Dispute />} />
-        <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/wallet" element={<Wallet />} />
-        <Route path="/notifications" element={<Notifications />} />
-      </Routes>
+      <div className="app dark-theme">
+        <Header />
+
+        <main className="main-content">
+          <Routes>
+            {/* Главная страница с лентой объявлений */}
+            <Route path="/" element={<Home />} />
+
+            {/* Страница создания объявления (Buy / Sell) */}
+            <Route path="/create" element={<CreateOrder />} />
+
+            {/* Список всех активных объявлений */}
+            <Route path="/orders" element={<Orders />} />
+
+            {/* Конкретная сделка + чат + эскроу */}
+            <Route path="/trade/:tradeId" element={<Trade />} />
+
+            {/* Профиль пользователя */}
+            <Route path="/profile" element={<Profile />} />
+
+            {/* Админ-панель для модерации и споров */}
+            <Route path="/admin/*" element={<Admin />} />
+
+            {/* Псевдоним для главной */}
+            <Route path="/home" element={<Navigate to="/" replace />} />
+
+            {/* Любой несуществующий маршрут → 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
     </Router>
   );
 }
+
+export default App;
