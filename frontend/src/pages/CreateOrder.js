@@ -1,42 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 
-const CreateOrder = () => {
-  const [item, setItem] = useState("");
-  const [quantity, setQuantity] = useState(1);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Здесь может быть логика отправки заказа на сервер
-    alert(`Заказ создан: ${item}, количество: ${quantity}`);
-    setItem("");
-    setQuantity(1);
-  };
-
-  return (
-    <div>
-      <h2>Создать заказ</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={item}
-          onChange={e => setItem(e.target.value)}
-          placeholder="Название товара"
-          required
-        />
-        <br />
-        <input
-          type="number"
-          value={quantity}
-          min="1"
-          onChange={e => setQuantity(Number(e.target.value))}
-          placeholder="Количество"
-          required
-        />
-        <br />
-        <button type="submit">Создать заказ</button>
-      </form>
-    </div>
-  );
-};
+const CreateOrder = () => (
+  <main>
+    <h1>Создать ордер</h1>
+    <form>
+      <select name="type"><option>Buy</option><option>Sell</option></select>
+      <input name="crypto" placeholder="Криптовалюта (например, USDT)" />
+      <input name="fiat" placeholder="Фиат (например, RUB)" />
+      <input name="price" placeholder="Цена" />
+      <input name="min" placeholder="Мин. сумма" />
+      <input name="max" placeholder="Макс. сумма" />
+      <input name="payment" placeholder="Способ оплаты" />
+      <input name="terms" placeholder="Доп. условия" />
+      <button type="submit">Опубликовать</button>
+    </form>
+  </main>
+);
 
 export default CreateOrder;
