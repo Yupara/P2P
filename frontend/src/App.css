@@ -1,17 +1,144 @@
-/* src/App.css */
-/* Базовые стили и тёмная тема */
-.app {
+:root {
+  --bg-main: #121e16;
+  --bg-secondary: #18271d;
+  --bg-accent: #244a29;
+  --text-main: #f2fff6;
+  --text-secondary: #a6e4bb;
+  --accent: #2fd371;
+  --accent-hover: #23b15d;
+  --danger: #e74c3c;
+  --border: #244a29;
+  --card-bg: #18271d;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+header, .header {
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9em 2em;
+  border-bottom: 1px solid var(--border);
+}
+
+.header__logo {
+  height: 36px;
+  margin-right: 1.5em;
+}
+
+.header__nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin: 0 1.1em;
+  font-weight: 500;
+  transition: color .2s;
+}
+.header__nav a:hover {
+  color: var(--accent);
+}
+
+button,
+input[type="submit"] {
+  background: var(--accent);
+  color: var(--bg-main);
+  padding: 0.6em 1.4em;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover,
+input[type="submit"]:hover {
+  background: var(--accent-hover);
+}
+
+main {
+  max-width: 900px;
+  margin: 2em auto;
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 2em;
+  box-shadow: 0 4px 22px #0005;
+}
+
+.order-filters {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1.5em;
+  background: var(--bg-secondary);
+  padding: 1em;
+  border-radius: 10px;
+}
+.order-filters select, .order-filters input {
+  background: var(--bg-main);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.5em;
+}
+
+.orders-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5em;
+}
+
+.order-card {
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  border-radius: 10px;
+  padding: 1.2em 1.5em;
+  min-width: 240px;
+  box-shadow: 0 2px 10px #0004;
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  gap: .5em;
 }
 
-.dark-theme {
-  background-color: #0a0f1c;
-  color: #ffffff;
+footer, .footer {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 1.3em 0 1em 0;
+  margin-top: 2em;
+  border-top: 1px solid var(--border);
 }
 
-.main-content {
-  flex: 1;
-  padding: 20px;
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+}
+.user-menu__avatar {
+  border-radius: 50%;
+  height: 34px;
+  width: 34px;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+}
+
+@media (max-width: 650px) {
+  main {
+    padding: 1em;
+  }
+  .orders-list {
+    flex-direction: column;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1em;
+  }
+  .header__nav {
+    margin-top: 0.5em;
+  }
 }
