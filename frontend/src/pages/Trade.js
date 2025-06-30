@@ -1,32 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
+import TradeChat from "../components/TradeChat";
 
-const Trade = () => {
-  const [offer, setOffer] = useState("");
-  const [response, setResponse] = useState(null);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Здесь может быть логика обмена или отправки предложения на сервер
-    setResponse(`Ваше предложение "${offer}" отправлено на рассмотрение.`);
-    setOffer("");
-  };
-
-  return (
+const Trade = ({ trade }) => (
+  <main>
+    <h1>Сделка</h1>
     <div>
-      <h2>Обмен</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={offer}
-          onChange={e => setOffer(e.target.value)}
-          placeholder="Введите ваше предложение"
-          required
-        />
-        <button type="submit">Отправить</button>
-      </form>
-      {response && <p>{response}</p>}
+      <div>Покупатель: {trade.buyer}</div>
+      <div>Продавец: {trade.seller}</div>
+      <div>Сумма: {trade.amount}</div>
+      <div>Курс: {trade.rate}</div>
+      <div>Статус: {trade.status}</div>
+      <div>⏳ Таймер: {trade.timer}</div>
     </div>
-  );
-};
+    <TradeChat messages={trade.messages} />
+    <button>Я оплатил</button>
+    <button>Выпустить средства</button>
+  </main>
+);
 
 export default Trade;
