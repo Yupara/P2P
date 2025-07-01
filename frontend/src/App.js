@@ -6,9 +6,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Header from './components/Header';
 import Footer from './components/Footer';
 
+// Auth guard
+import PrivateRoute from './pages/PrivateRoute';
+
 // Pages
 import Home from './pages/Home';
-import CreateOrder from './pages/CreateOrder';
+import CreateOrderPage from './pages/CreateOrderPage';
 import OrdersList from './pages/OrdersList';
 import OrderPage from './pages/OrderPage';
 import EditOrderPage from './pages/EditOrderPage';
@@ -18,14 +21,11 @@ import PaymentPage from './pages/PaymentPage';
 import Wallet from './pages/Wallet';
 import Profile from './pages/Profile';
 import Disputes from './pages/Disputes';
-import Admin from './pages/Admin';
+import AdminPanel from './pages/Admin';        // Admin.js
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import LogoutButton from './pages/LogoutButton';
 import NotFound from './pages/NotFound';
-
-// Auth guard
-import PrivateRoute from './pages/PrivateRoute';
 
 // Styles
 import './App.css';
@@ -48,7 +48,7 @@ function App() {
             path="/create"
             element={
               <PrivateRoute>
-                <CreateOrder />
+                <CreateOrderPage />
               </PrivateRoute>
             }
           />
@@ -128,12 +128,12 @@ function App() {
             path="/admin/*"
             element={
               <PrivateRoute>
-                <Admin />
+                <AdminPanel />
               </PrivateRoute>
             }
           />
 
-          {/* Redirects & 404 */}
+          {/* Redirect and 404 */}
           <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
