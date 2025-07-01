@@ -1,58 +1,61 @@
 // src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import OrderBookPage from './pages/OrderBookPage';
-import CreateOrderPage from './pages/CreateOrderPage';
-import TradePage from './pages/TradePage';
-import WalletPage from './pages/WalletPage';
-import ProfilePage from './pages/ProfilePage';
-import DisputesPage from './pages/DisputesPage';
-import AdminPanelPage from './pages/AdminPanelPage';
-import NotFoundPage from './pages/NotFoundPage';
-import './App.css'; // стили тёмной темы и базовые правила
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './App.css';
+import OrderCard from './components/OrderCard';
 
 function App() {
+  const [tab, setTab] = useState('buy');
+  const [currency, setCurrency] = useState('USDT');
+  const [amountFilter, setAmountFilter] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('all');
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    axios.get('/api/orders')
+      .then(res => setOrders(res.data))
+      .catch(err => console.error('Ошибка загрузки ордеров:', err));
+  }, []);
+
+  const filtered = orders
+    .filter(o => o.side === tab)
+    .filter(o => currency ? o.amount.includes(currency) : true)
+    .filter(o => amountFilter ? Number(o.amount) >= Number(amountFilter) : true)
+    .filter(o => paymentMethod === 'all' || o.methods.includes(paymentMethod));
+
   return (
-    <Router>
-      <div className="app dark-theme">
-        <Header />
+    <div className="app dark-theme">
+      <header className="tabs">
+        <button className={tab==='buy'?'active':''} onClick={()=>setTab('buy')}>Покупка</button>
+        <button className={tab==='sell'?'active':''} onClick={()=>setTab('sell')}>Продажа</button>
+      </header>
 
-        <main className="content">
-          <Routes>
-            {/* Лента объявлений Buy/Sell */}
-            <Route path="/" element={<OrderBookPage />} />
-
-            {/* Создать объявление */}
-            <Route path="/create" element={<CreateOrderPage />} />
-
-            {/* Окно сделки (чат + эскроу) */}
-            <Route path="/trade/:tradeId" element={<TradePage />} />
-
-            {/* Кошелёк: баланс, пополнение/вывод */}
-            <Route path="/wallet" element={<WalletPage />} />
-
-            {/* Профиль пользователя */}
-            <Route path="/profile" element={<ProfilePage />} />
-
-            {/* Разрешение споров */}
-            <Route path="/disputes" element={<DisputesPage />} />
-
-            {/* Админ-панель */}
-            <Route path="/admin/*" element={<AdminPanelPage />} />
-
-            {/* Псевдоним главной */}
-            <Route path="/home" element={<Navigate to="/" replace />} />
-
-            {/* 404 */}
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
-
-        <Footer />
+      <div className="filters">
+        <select value={currency} onChange={e=>setCurrency(e.target.value)}>
+          <option>USDT</option><option>BTC</option><option>ETH</option>
+        </select>
+        <input
+          type="number"
+          placeholder="Сумма"
+          value={amountFilter}
+          onChange={e=>setAmountFilter(e.target.value)}
+        />
+        <select value={paymentMethod} onChange={e=>setPaymentMethod(e.target.value)}>
+          <option value="all">Все способы оплаты</option>
+          <option value="SBP">SBP</option>
+          <option value="Card">Карта</option>
+          <option value="PayPal">PayPal</option>
+        </select>
+        <button className="filter-btn">Фильтр</button>
       </div>
-    </Router>
+
+      <div className="orders-list">
+        {filtered.map(order => (
+          <OrderCard key={order.id} order={order} />
+        ))}
+        {filtered.length===0 && <p className="no-results">Нет ордеров</p>}
+      </div>
+    </div>
   );
 }
 
