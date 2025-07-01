@@ -1,0 +1,36 @@
+/* src/pages/DealPage.css */
+.deal-page {
+  padding: 20px;
+  background-color: #0a1f1c;
+  color: #e0f7f4;
+  min-height: 100vh;
+}
+
+.deal-page h1 {
+  margin-bottom: 16px;
+}
+
+.trade-info p {
+  margin: 8px 0;
+}
+
+.actions button {
+  margin-right: 12px;
+  padding: 8px 16px;
+  background-color: #1f8f72;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.dispute-info {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #2b3a36;
+  border-radius: 6px;
+}
+
+.error {
+  color: #ff6b6b;
+}
