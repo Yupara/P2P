@@ -1,70 +1,98 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-// Контексты
-import { AuthProvider } from './context/AuthContext';
-import { ThemeProvider } from './context/ThemeContext';
+import MainPage from './pages/MainPage';
+import CreateOrderPage from './pages/CreateOrderPage';
+import OrdersList from './pages/OrdersList';
+import OrderPage from './pages/OrderPage';
+import EditOrderPage from './pages/EditOrderPage';
+import DealPage from './pages/DealPage';
+import MyOrdersPage from './pages/MyOrdersPage';
+import PaymentPage from './pages/PaymentPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import LogoutButton from './pages/LogoutButton';
+import PrivateRoute from './pages/PrivateRoute';
 
-// Общие компоненты
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Loader from './components/Loader';
-import ErrorBoundary from './components/ErrorBoundary';
-
-// Страницы
-import OrderBook from './pages/OrderBook';           // лента ордеров
-import CreateOrder from './pages/CreateOrder';       // форма создания ордера
-import Trade from './pages/Trade';                   // окно сделки + чат + эскроу
-import Wallet from './pages/Wallet';                 // пополнение/вывод и баланс
-import Profile from './pages/Profile';               // профиль, KYC, история
-import Disputes from './pages/Disputes';             // управление спорами
-import AdminPanel from './pages/AdminPanel';         // админ-панель (только для тебя)
-import Login from './pages/Login';                   // вход
-import Register from './pages/Register';             // регистрация
-import NotFound from './pages/NotFound';             // 404
+import './App.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <BrowserRouter>
-          <Header />
+    <Router>
+      <div className="app dark-theme">
+        <Routes>
+          {/* Главная — лента объявлений */}
+          <Route path="/" element={<MainPage />} />
 
-          <ErrorBoundary>
-            <React.Suspense fallback={<Loader />}>
-              <Routes>
-                {/* Главная — лента buy/sell */}
-                <Route path="/" element={<OrderBook />} />
+          {/* Публичные маршруты */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/logout" element={<LogoutButton />} />
 
-                {/* Регистрация и вход */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+          {/* Защищённые маршруты */}
+          <Route
+            path="/create"
+            element={
+              <PrivateRoute>
+                <CreateOrderPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <PrivateRoute>
+                <OrdersList />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/orders/:id"
+            element={
+              <PrivateRoute>
+                <OrderPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/orders/:id/edit"
+            element={
+              <PrivateRoute>
+                <EditOrderPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/trade/:id"
+            element={
+              <PrivateRoute>
+                <DealPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/my-orders"
+            element={
+              <PrivateRoute>
+                <MyOrdersPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/payment/:id"
+            element={
+              <PrivateRoute>
+                <PaymentPage />
+              </PrivateRoute>
+            }
+          />
 
-                {/* Только для авторизованных */}
-                <Route element={<Navigate to="/login" replace />} path="/create" />
-                <Route path="/create" element={<CreateOrder />} />
-                <Route path="/trade/:id" element={<Trade />} />
-                <Route path="/wallet" element={<Wallet />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/disputes" element={<Disputes />} />
-
-                {/* Админ-панель (доступно только тебе) */}
-                <Route path="/admin/*" element={<AdminPanel />} />
-
-                {/* Редирект alias */}
-                <Route path="/home" element={<Navigate to="/" replace />} />
-
-                {/* 404 */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </React.Suspense>
-          </ErrorBoundary>
-
-          <Footer />
-        </BrowserRouter>
-      </ThemeProvider>
-    </AuthProvider>
+          {/* Всe прочие — на главную */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
