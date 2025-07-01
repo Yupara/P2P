@@ -2,40 +2,53 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import MainPage from './pages/MainPage';
-import CreateOrderPage from './pages/CreateOrderPage';
+// Layout
+import Header from './components/Header';
+import Footer from './components/Footer';
+
+// Pages
+import Home from './pages/Home';
+import CreateOrder from './pages/CreateOrder';
 import OrdersList from './pages/OrdersList';
 import OrderPage from './pages/OrderPage';
 import EditOrderPage from './pages/EditOrderPage';
 import DealPage from './pages/DealPage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import PaymentPage from './pages/PaymentPage';
+import Wallet from './pages/Wallet';
+import Profile from './pages/Profile';
+import Disputes from './pages/Disputes';
+import Admin from './pages/Admin';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import LogoutButton from './pages/LogoutButton';
+import NotFound from './pages/NotFound';
+
+// Auth guard
 import PrivateRoute from './pages/PrivateRoute';
 
+// Styles
 import './App.css';
 
 function App() {
   return (
     <Router>
-      <div className="app dark-theme">
-        <Routes>
-          {/* Главная — лента объявлений */}
-          <Route path="/" element={<MainPage />} />
+      <Header />
 
-          {/* Публичные маршруты */}
+      <main className="main-content">
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/logout" element={<LogoutButton />} />
 
-          {/* Защищённые маршруты */}
+          {/* Protected */}
           <Route
             path="/create"
             element={
               <PrivateRoute>
-                <CreateOrderPage />
+                <CreateOrder />
               </PrivateRoute>
             }
           />
@@ -87,11 +100,46 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/wallet"
+            element={
+              <PrivateRoute>
+                <Wallet />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/disputes"
+            element={
+              <PrivateRoute>
+                <Disputes />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/*"
+            element={
+              <PrivateRoute>
+                <Admin />
+              </PrivateRoute>
+            }
+          />
 
-          {/* Всe прочие — на главную */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Redirects & 404 */}
+          <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-      </div>
+      </main>
+
+      <Footer />
     </Router>
   );
 }
