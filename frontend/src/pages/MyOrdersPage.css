@@ -1,0 +1,21 @@
+/* src/pages/MyOrdersPage.css */
+.my-orders-page {
+  padding: 20px;
+  background-color: #0a1f1c;
+  color: #e0f7f4;
+  min-height: 100vh;
+}
+
+.my-orders-page h1 {
+  margin-bottom: 16px;
+}
+
+.orders-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.error {
+  color: #ff6b6b;
+}
