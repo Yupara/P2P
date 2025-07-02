@@ -1,18 +1,22 @@
-import React from 'react';
+// src/pages/OrdersList.js
+import React, { useEffect, useState } from 'react';
 import OrderCard from '../components/OrderCard';
 
-const OrdersList = ({ orders }) => {
+export default function OrdersList() {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/orders')
+      .then(res => res.json())
+      .then(setOrders)
+      .catch(console.error);
+  }, []);
+
   return (
     <div className="orders-list">
-      {orders && orders.length > 0 ? (
-        orders.map(order => (
-          <OrderCard key={order.id} order={order} />
-        ))
-      ) : (
-        <p>Нет доступных ордеров.</p>
-      )}
+      {orders.map(order => (
+        <OrderCard key={order.id} order={order} />
+      ))}
     </div>
   );
-};
-
-export default OrdersList;
+}
