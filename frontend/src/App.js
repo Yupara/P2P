@@ -11,6 +11,7 @@ import PrivateRoute from './pages/PrivateRoute';
 
 // Pages
 import Home from './pages/Home';
+import OrderBookPage from './pages/OrderBookPage';
 import CreateOrderPage from './pages/CreateOrderPage';
 import OrdersList from './pages/OrdersList';
 import OrderPage from './pages/OrderPage';
@@ -21,7 +22,7 @@ import PaymentPage from './pages/PaymentPage';
 import Wallet from './pages/Wallet';
 import Profile from './pages/Profile';
 import Disputes from './pages/Disputes';
-import AdminPanel from './pages/Admin';        // Admin.js
+import Admin from './pages/Admin';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import LogoutButton from './pages/LogoutButton';
@@ -38,7 +39,8 @@ function App() {
       <main className="main-content">
         <Routes>
           {/* Public */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<OrderBookPage />} />
+          <Route path="/home" element={<OrderBookPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/logout" element={<LogoutButton />} />
@@ -128,13 +130,12 @@ function App() {
             path="/admin/*"
             element={
               <PrivateRoute>
-                <AdminPanel />
+                <Admin />
               </PrivateRoute>
             }
           />
 
-          {/* Redirect and 404 */}
-          <Route path="/home" element={<Navigate to="/" replace />} />
+          {/* Fallback */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
