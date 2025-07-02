@@ -1,20 +1,15 @@
-import React from "react";
-import { OrderCard, ordersMock } from "./OrderCard";
+// до
+import React, { useEffect, useState } from 'react';
+import { Order } from '../components/OrderCard';
+...
+{orders.map(order => (
+  <Order key={order.id} order={order} />
+))}
 
-export default function OrdersList() {
-  // Тут может быть логика фильтрации, поиска и пр.
-  return (
-    <>
-      <h2>Список ордеров</h2>
-      <section className="orders">
-        {ordersMock.map(order =>
-          <OrderCard
-            key={order.id}
-            {...order}
-            onClick={() => alert(`Открыть ордер #${order.id}`)}
-          />
-        )}
-      </section>
-    </>
-  );
-}
+// после
+import React, { useEffect, useState } from 'react';
+import OrderCard from '../components/OrderCard';
+...
+{orders.map(order => (
+  <OrderCard key={order.id} order={order} />
+))}
