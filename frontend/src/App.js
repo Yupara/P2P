@@ -7,12 +7,12 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 // Auth guard
-import PrivateRoute from './pages/PrivateRoute';
+import PrivateRoute from './components/PrivateRoute';
 
 // Pages
 import Home from './pages/Home';
 import OrderBookPage from './pages/OrderBookPage';
-import CreateOrderPage from './pages/CreateOrderPage';
+import CreateOrder from './pages/CreateOrder';
 import OrdersList from './pages/OrdersList';
 import OrderPage from './pages/OrderPage';
 import EditOrderPage from './pages/EditOrderPage';
@@ -48,91 +48,47 @@ function App() {
           {/* Protected */}
           <Route
             path="/create"
-            element={
-              <PrivateRoute>
-                <CreateOrderPage />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><CreateOrder /></PrivateRoute>}
           />
           <Route
             path="/orders"
-            element={
-              <PrivateRoute>
-                <OrdersList />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><OrdersList /></PrivateRoute>}
           />
           <Route
             path="/orders/:id"
-            element={
-              <PrivateRoute>
-                <OrderPage />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><OrderPage /></PrivateRoute>}
           />
           <Route
             path="/orders/:id/edit"
-            element={
-              <PrivateRoute>
-                <EditOrderPage />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><EditOrderPage /></PrivateRoute>}
           />
           <Route
             path="/trade/:id"
-            element={
-              <PrivateRoute>
-                <DealPage />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><DealPage /></PrivateRoute>}
           />
           <Route
             path="/my-orders"
-            element={
-              <PrivateRoute>
-                <MyOrdersPage />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><MyOrdersPage /></PrivateRoute>}
           />
           <Route
             path="/payment/:id"
-            element={
-              <PrivateRoute>
-                <PaymentPage />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><PaymentPage /></PrivateRoute>}
           />
           <Route
             path="/wallet"
-            element={
-              <PrivateRoute>
-                <Wallet />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><Wallet /></PrivateRoute>}
           />
           <Route
             path="/profile"
-            element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><Profile /></PrivateRoute>}
           />
           <Route
             path="/disputes"
-            element={
-              <PrivateRoute>
-                <Disputes />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><Disputes /></PrivateRoute>}
           />
           <Route
             path="/admin/*"
-            element={
-              <PrivateRoute>
-                <Admin />
-              </PrivateRoute>
-            }
+            element={<PrivateRoute><Admin /></PrivateRoute>}
           />
 
           {/* Fallback */}
