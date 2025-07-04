@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import OrderCard from '../components/OrderCard';
+import OrderCard from './OrderCard';
 import './MyOrdersPage.css';
 
 export default function MyOrdersPage() {
@@ -11,7 +11,7 @@ export default function MyOrdersPage() {
   useEffect(() => {
     axios.get('/api/my-orders')
       .then(res => setMyOrders(res.data))
-      .catch(err => setError('Не удалось загрузить ваши ордера'))
+      .catch(() => setError('Не удалось загрузить ваши ордера'))
       .finally(() => setLoading(false));
   }, []);
 
