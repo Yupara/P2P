@@ -1,6 +1,6 @@
 import React from "react";
 import OrderFilters from "../components/OrderFilters";
-import OrderCard from "../components/OrderCard";
+import OrderCard from "../pages/OrderCard";
 
 const Orders = ({ orders }) => (
   <main>
