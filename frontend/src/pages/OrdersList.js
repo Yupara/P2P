@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import OrderCard from './OrderCard';
+import OrderCard from '../components/OrderCard';
 import './OrdersList.css';
 
 export default function OrdersList() {
