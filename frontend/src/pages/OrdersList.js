@@ -1,6 +1,6 @@
 // src/pages/OrdersList.js
 import React, { useEffect, useState } from 'react';
-import OrderCard from '../components/OrderCard';
+import OrderCard from '../pages/OrderCard';
 
 export default function OrdersList() {
   const [orders, setOrders] = useState([]);
