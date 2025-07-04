@@ -1,7 +1,7 @@
 // src/pages/MyOrdersPage.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import OrderCard from '../components/OrderCard';
+import OrderCard from '../pages/OrderCard';
 import './MyOrdersPage.css'; // создайте файл для стилей
 
 export default function MyOrdersPage() {
