@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import OrderCard from '../components/OrderCard';
+import OrderCard from './OrderCard';
 import './OrdersList.css';
 
 export default function OrdersList() {
@@ -11,7 +11,7 @@ export default function OrdersList() {
   useEffect(() => {
     axios.get('/api/orders')
       .then(res => setOrders(res.data))
-      .catch(err => setError('Не удалось загрузить объявления'))
+      .catch(() => setError('Не удалось загрузить объявления'))
       .finally(() => setLoading(false));
   }, []);
 
