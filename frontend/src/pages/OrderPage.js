@@ -1,33 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Order } from "./OrderCard";
+// src/pages/OrderPage.js
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import OrderCard from '../components/OrderCard';
+import './OrderPage.css';
 
 export default function OrderPage() {
-  const { orderId } = useParams();
-  const [order, setOrder] = useState<Order | null>(null);
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`/orders/${orderId}`)
-      .then((res) => res.json())
-      .then(setOrder);
-  }, [orderId]);
+    axios.get(`/api/orders/${id}`)
+      .then(res => setOrder(res.data))
+      .catch(() => setError('Не удалось загрузить объявление'))
+      .finally(() => setLoading(false));
+  }, [id]);
 
-  if (!order) return <div className="p2p-app">Загрузка...</div>;
+  if (loading) return <p>Загрузка...</p>;
+  if (error)   return <p className="error">{error}</p>;
+  if (!order)  return <p>Объявление не найдено</p>;
 
   return (
-    <div className="p2p-app">
-      <button onClick={() => navigate(-1)} style={{marginBottom: 24}}>← Назад</button>
-      <h2>Покупка USDT</h2>
-      <div style={{marginBottom: 16}}>Цена: <b>{order.price} RUB/USDT</b></div>
-      <div>Доступно: <b>{order.amount}</b></div>
-      <div>Лимиты: <b>{order.limits}</b></div>
-      <div>Способы оплаты: <b>{order.payment}</b></div>
-      <div style={{margin: "20px 0"}}><b>Введите сумму покупки:</b></div>
-      <input type="number" placeholder="Сумма (RUB)" style={{fontSize: 18, padding: 8, borderRadius: 6, border: "1px solid #2a5b3c", background: "#184329", color: "#e1fbe3"}} />
-      <div style={{marginTop: 28}}>
-        <button className="buy-btn" style={{fontSize: 18, padding: "10px 38px"}} onClick={() => navigate(`/pay/${order.id}`)}>
-          Перейти к оплате
+    <div className="order-page">
+      <button className="back-btn" onClick={() => navigate(-1)}>← Назад</button>
+      <h1>Объявление #{order.id}</h1>
+      <OrderCard order={order} />
+      <div className="order-actions">
+        <button onClick={() => navigate(`/trade/${order.id}`)}>
+          Начать сделку
         </button>
       </div>
     </div>
