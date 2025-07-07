@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import OrderCard from '../components/OrderCard';
-import './OrderPage.css';
 
 export default function OrderPage() {
   const { id } = useParams();
@@ -24,11 +23,11 @@ export default function OrderPage() {
   if (!order)  return <p>Объявление не найдено</p>;
 
   return (
-    <div className="order-page">
-      <button className="back-btn" onClick={() => navigate(-1)}>← Назад</button>
+    <div>
+      <button onClick={() => navigate(-1)}>← Назад</button>
       <h1>Объявление #{order.id}</h1>
       <OrderCard order={order} />
-      <div className="order-actions">
+      <div>
         <button onClick={() => navigate(`/trade/${order.id}`)}>
           Начать сделку
         </button>
