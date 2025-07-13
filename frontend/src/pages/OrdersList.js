@@ -1,32 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import OrderCard from '../components/OrderCard';
-import './OrdersList.css';
 
-export default function OrdersList() {
+function OrdersList() {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get('/api/orders')
+    axios.get('http://localhost:8000/list') // API-эндпоинт
       .then(res => setOrders(res.data))
-      .catch(() => setError('Не удалось загрузить объявления'))
-      .finally(() => setLoading(false));
+      .catch(err => console.error('Ошибка загрузки:', err));
   }, []);
 
-  if (loading) return <p>Загрузка...</p>;
-  if (error)   return <p className="error">{error}</p>;
-
   return (
-    <div className="orders-list-page">
-      <h1>Все объявления</h1>
-      <div className="orders-list">
-        {orders.length
-          ? orders.map(o => <OrderCard key={o.id} order={o} />)
-          : <p>Объявлений нет</p>
-        }
-      </div>
+    <div>
+      <h2>🗂️ Все доступные сделки</h2>
+      {orders.length === 0 ? (
+        <p>Нет активных сделок</p>
+      ) : (
+        orders.map(order => (
+          <OrderCard
+            key={order.id}
+            buyer={order.buyer}
+            seller={order.seller}
+            amount={order.amount}
+            currency={order.currency}
+            status={order.status}
+          />
+        ))
+      )}
     </div>
   );
 }
+
+export default OrdersList;
