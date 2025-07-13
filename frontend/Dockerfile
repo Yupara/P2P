@@ -1,19 +1,16 @@
-# Stage 1: сборка фронтенда
-FROM node:18 AS builder
-WORKDIR /app
+# Этап 1: Установка зависимостей
+FROM node:16 AS builder
 
-COPY package*.json ./
+WORKDIR /app
+COPY package.json package-lock.json ./
 RUN npm install
-COPY . .
+
+# Копируем все файлы из текущей директории в контейнер
+COPY . ./
+
+# Запуск сборки
 RUN npm run build
 
-# Stage 2: отдача статики через nginx
+# Этап 2: Отдача статики через nginx
 FROM nginx:alpine
-# удалим дефолтный конфиг, если нужно
-RUN rm /etc/nginx/conf.d/default.conf
-
-# копируем билд приложения
 COPY --from=builder /app/build /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
