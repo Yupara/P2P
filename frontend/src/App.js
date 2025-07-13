@@ -10,6 +10,9 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Toast from './components/Toast';
 import PrivateRoute from './components/PrivateRoute';
 
+// Reusable OrderCard
+import OrderCard from './components/OrderCard';
+
 // Public pages
 import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
@@ -33,6 +36,15 @@ import Wallet from './pages/Wallet';
 import Admin from './pages/Admin';
 
 function App() {
+  // Пример демонстрации OrderCard прямо в App
+  const sampleOrder = {
+    buyer: 'Ali',
+    seller: 'Zohir',
+    amount: 150,
+    currency: 'USDT',
+    status: 'pending'
+  };
+
   return (
     <Router>
       <ErrorBoundary>
@@ -40,6 +52,17 @@ function App() {
         <Toast />
 
         <div className="app-container">
+          <h1>📊 Список P2P сделок</h1>
+
+          {/* Вставляем OrderCard прямо в шапку приложения для примера */}
+          <OrderCard
+            buyer={sampleOrder.buyer}
+            seller={sampleOrder.seller}
+            amount={sampleOrder.amount}
+            currency={sampleOrder.currency}
+            status={sampleOrder.status}
+          />
+
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<Home />} />
