@@ -1,37 +1,34 @@
-// src/pages/OrderPage.js
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import OrderCard from '../components/OrderCard';
 
-export default function OrderPage() {
+function OrderPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get(`/api/orders/${id}`)
+    axios.get(`http://localhost:8000/orders/${id}`)
       .then(res => setOrder(res.data))
-      .catch(() => setError('Не удалось загрузить объявление'))
-      .finally(() => setLoading(false));
+      .catch(err => console.error('Ошибка загрузки:', err));
   }, [id]);
-
-  if (loading) return <p>Загрузка...</p>;
-  if (error)   return <p className="error">{error}</p>;
-  if (!order)  return <p>Объявление не найдено</p>;
 
   return (
     <div>
-      <button onClick={() => navigate(-1)}>← Назад</button>
-      <h1>Объявление #{order.id}</h1>
-      <OrderCard order={order} />
-      <div>
-        <button onClick={() => navigate(`/trade/${order.id}`)}>
-          Начать сделку
-        </button>
-      </div>
+      <h2>📄 Сделка #{id}</h2>
+      {order ? (
+        <OrderCard
+          buyer={order.buyer}
+          seller={order.seller}
+          amount={order.amount}
+          currency={order.currency}
+          status={order.status}
+        />
+      ) : (
+        <p>Загрузка...</p>
+      )}
     </div>
   );
 }
+
+export default OrderPage;
