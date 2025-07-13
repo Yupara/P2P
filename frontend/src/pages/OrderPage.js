@@ -1,32 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import React from 'react';
 import OrderCard from '../components/OrderCard';
 
-function OrderPage() {
-  const { id } = useParams();
-  const [order, setOrder] = useState(null);
+const orders = [
+  {
+    id: 1,
+    title: 'Обмен BTC на ETH',
+    amountFrom: 0.5,
+    currencyFrom: 'BTC',
+    amountTo: 10,
+    currencyTo: 'ETH',
+    contact: '@bitcoin_user',
+    createdAt: '2023-07-10T14:30:00Z',
+  },
+  {
+    id: 2,
+    title: 'Обмен ETH на USDT',
+    amountFrom: 5,
+    currencyFrom: 'ETH',
+    amountTo: 1500,
+    currencyTo: 'USDT',
+    contact: '@eth_user',
+    createdAt: '2023-07-11T16:45:00Z',
+  }
+  // Добавь больше заявок по необходимости
+];
 
-  useEffect(() => {
-    axios.get(`http://localhost:8000/orders/${id}`)
-      .then(res => setOrder(res.data))
-      .catch(err => console.error('Ошибка загрузки:', err));
-  }, [id]);
-
+const OrderPage = () => {
   return (
-    <div>
-      <h2>📄 Сделка #{id}</h2>
-      {order ? (
-        <OrderCard
-          buyer={order.buyer}
-          seller={order.seller}
-          amount={order.amount}
-          currency={order.currency}
-          status={order.status}
-        />
-      ) : (
-        <p>Загрузка...</p>
-      )}
+    <div className="order-page">
+      <h2>Список заявок</h2>
+      <div className="order-list">
+        {orders.map(order => (
+          <OrderCard key={order.id} order={order} />
+        ))}
+      </div>
     </div>
   );
 }
