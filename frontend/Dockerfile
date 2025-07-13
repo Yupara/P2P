@@ -2,15 +2,21 @@
 FROM node:16 AS builder
 
 WORKDIR /app
+
+# Копируем package.json и package-lock.json
 COPY package.json package-lock.json ./
+
+# Устанавливаем зависимости
 RUN npm install
 
-# Копируем все файлы из текущей директории в контейнер
+# Копируем все файлы в контейнер
 COPY . ./
 
-# Запуск сборки
+# Запускаем сборку
 RUN npm run build
 
 # Этап 2: Отдача статики через nginx
 FROM nginx:alpine
+
+# Копируем собранную статику из первого этапа в nginx
 COPY --from=builder /app/build /usr/share/nginx/html
