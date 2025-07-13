@@ -3,8 +3,8 @@ FROM node:16 AS builder
 
 WORKDIR /app
 
-# Копируем package.json и package-lock.json
-COPY package.json package-lock.json ./
+# Копируем package.json
+COPY package.json
 
 # Устанавливаем зависимости
 RUN npm install
