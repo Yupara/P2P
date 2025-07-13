@@ -1,112 +1,52 @@
 // src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
-// layout
-import Header from './components/Header';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './App.css';
+import OrderCard from './components/OrderCard';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-// auth guard
-import PrivateRoute from './components/PrivateRoute';
-
-// public pages
-import Home from './pages/Home';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import LogoutButton from './pages/LogoutButton';
-import NotFound from './pages/NotFound';
-
-// p2p pages
-import OrderBookPage from './pages/OrderBookPage';
-import CreateOrderPage from './pages/CreateOrderPage';
-import OrdersList from './pages/OrdersList';
-import OrderPage from './pages/OrderPage';
-import EditOrderPage from './pages/EditOrderPage';
-import DealPage from './pages/DealPage';
-import MyOrdersPage from './pages/MyOrdersPage';
-import PaymentPage from './pages/PaymentPage';
-import Wallet from './pages/Wallet';
-import Profile from './pages/Profile';
-import Disputes from './pages/Disputes';
-
-// admin
-import Admin from './pages/Admin';
-
-import './App.css';
-
 function App() {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/list') // Убедись, что backend отдаёт данные по этому пути
+      .then(res => {
+        setOrders(res.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Ошибка загрузки:', err);
+        setLoading(false);
+      });
+  }, []);
+
   return (
-    <Router>
-      <Header />
+    <div className="App">
+      <Navbar />
+      <div className="container">
+        <h1>📊 Список P2P сделок</h1>
 
-      <main className="main-content">
-        <Routes>
-          {/* Public */}
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/logout" element={<LogoutButton />} />
-
-          {/* P2P exchange (protected) */}
-          <Route
-            path="/orderbook"
-            element={<PrivateRoute><OrderBookPage /></PrivateRoute>}
-          />
-          <Route
-            path="/create"
-            element={<PrivateRoute><CreateOrderPage /></PrivateRoute>}
-          />
-          <Route
-            path="/orders"
-            element={<PrivateRoute><OrdersList /></PrivateRoute>}
-          />
-          <Route
-            path="/orders/:id"
-            element={<PrivateRoute><OrderPage /></PrivateRoute>}
-          />
-          <Route
-            path="/orders/:id/edit"
-            element={<PrivateRoute><EditOrderPage /></PrivateRoute>}
-          />
-          <Route
-            path="/trade/:id"
-            element={<PrivateRoute><DealPage /></PrivateRoute>}
-          />
-          <Route
-            path="/my-orders"
-            element={<PrivateRoute><MyOrdersPage /></PrivateRoute>}
-          />
-          <Route
-            path="/payment/:id"
-            element={<PrivateRoute><PaymentPage /></PrivateRoute>}
-          />
-          <Route
-            path="/wallet"
-            element={<PrivateRoute><Wallet /></PrivateRoute>}
-          />
-          <Route
-            path="/profile"
-            element={<PrivateRoute><Profile /></PrivateRoute>}
-          />
-          <Route
-            path="/disputes"
-            element={<PrivateRoute><Disputes /></PrivateRoute>}
-          />
-
-          {/* Admin panel (protected) */}
-          <Route
-            path="/admin/*"
-            element={<PrivateRoute><Admin /></PrivateRoute>}
-          />
-
-          {/* Fallback */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-
+        {loading ? (
+          <p>⏳ Загрузка данных...</p>
+        ) : orders.length === 0 ? (
+          <p>Нет активных сделок.</p>
+        ) : (
+          orders.map(order => (
+            <OrderCard
+              key={order.id}
+              buyer={order.buyer}
+              seller={order.seller}
+              amount={order.amount}
+              currency={order.currency}
+              status={order.status}
+            />
+          ))
+        )}
+      </div>
       <Footer />
-    </Router>
+    </div>
   );
 }
 
