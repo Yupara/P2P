@@ -1,32 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import OrderCard from '../components/OrderCard';
-import './MyOrdersPage.css';
 
-export default function MyOrdersPage() {
+function MyOrdersPage() {
   const [myOrders, setMyOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get('/api/my-orders')
+    axios.get('http://localhost:8000/my-orders') // адаптируй под свой API
       .then(res => setMyOrders(res.data))
-      .catch(() => setError('Не удалось загрузить ваши ордера'))
-      .finally(() => setLoading(false));
+      .catch(err => console.error('Ошибка загрузки:', err));
   }, []);
 
-  if (loading) return <p>Загрузка...</p>;
-  if (error)   return <p className="error">{error}</p>;
-
   return (
-    <div className="my-orders-page">
-      <h1>Мои ордера</h1>
-      <div className="orders-list">
-        {myOrders.length
-          ? myOrders.map(o => <OrderCard key={o.id} order={o} />)
-          : <p>У вас нет активных ордеров</p>
-        }
-      </div>
+    <div>
+      <h2>📁 Мои сделки</h2>
+      {myOrders.length === 0 ? (
+        <p>У тебя пока нет сделок</p>
+      ) : (
+        myOrders.map(order => (
+          <OrderCard
+            key={order.id}
+            buyer={order.buyer}
+            seller={order.seller}
+            amount={order.amount}
+            currency={order.currency}
+            status={order.status}
+          />
+        ))
+      )}
     </div>
   );
 }
+
+export default MyOrdersPage;
