@@ -1,10 +1,13 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Home = () => (
-  <div>
-    <h1>Главная страница</h1>
-    <p>Добро пожаловать на наш сайт!</p>
-  </div>
-);
-
-export default Home;
+export default function Home() {
+  return (
+    <div style={{ padding: 20 }}>
+      <h1>Добро пожаловать на P2P Exchange</h1>
+      <p>
+        <Link to="/orders">Перейти к списку объявлений</Link>
+      </p>
+    </div>
+  );
+}
