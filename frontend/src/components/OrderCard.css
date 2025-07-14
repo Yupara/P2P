@@ -1,42 +1,9 @@
 .order-card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 350px;
-}
-
-.order-card-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.order-card-info p {
-  margin: 5px 0;
-}
-
-.order-card-info strong {
-  color: #333;
-}
-
-.order-card-actions {
-  margin-top: 15px;
-  text-align: center;
-}
-
-.btn-action {
-  background-color: #007bff;
-  color: white;
-  border: none;
+  background: #102a28;
+  color: #e0f7f4;
+  padding: 12px;
+  margin: 8px 0;
   border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
 }
-
-.btn-action:hover {
-  background-color: #0056b3;
-}
+.order-card.buy { border-left: 4px solid #27a289; }
+.order-card.sell { border-left: 4px solid #e74c3c; }
