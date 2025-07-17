@@ -1,0 +1,12 @@
+body {
+  background: #112d13;
+  color: #eaffda;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+.header, .navbar {
+  background: #1e4724;
+}
+.button {
+  background: #2fa746;
+  color: #fff;
+}
