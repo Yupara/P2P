@@ -13,24 +13,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Регистрация
-app.post('/api/register', (req, res) => {
-  const { username, password } = req.body;
-  // Здесь должна быть ваша логика регистрации пользователя
-  res.json({ success: true, message: `Пользователь зарегистрирован!` });
-});
+// Места для подключения роутов
+// require('./routes/user')(app);
+// require('./routes/deal')(app);
+// require('./routes/dispute')(app);
+// require('./routes/message')(app);
+// require('./routes/admin')(app);
+// require('./routes/support')(app);
 
-// Логин
-app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
-  // Здесь должна быть ваша логика проверки пользователя
-  res.json({ success: true, message: `Вход выполнен!`, token: "FAKE-TOKEN" });
-});
-
-// Получение данных профиля
-app.get('/api/profile', (req, res) => {
-  // Обычно тут нужна авторизация по токену
-  res.json({ username: "", balance: 0 });
+// Пример базового роута
+app.get('/', (req, res) => {
+  res.json({ message: 'P2P Exchange Backend is running!' });
 });
 
 // Обработка ошибок
