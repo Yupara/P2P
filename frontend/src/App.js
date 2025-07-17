@@ -13,17 +13,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Места для подключения роутов
-// require('./routes/user')(app);
-// require('./routes/deal')(app);
-// require('./routes/dispute')(app);
-// require('./routes/message')(app);
-// require('./routes/admin')(app);
-// require('./routes/support')(app);
-
-// Пример базового роута
+// Пример базового роута для проверки работы сервера
 app.get('/', (req, res) => {
-  res.json({ message: 'P2P Exchange Backend is running!' });
+  res.json({ message: 'Backend работает!' });
 });
 
 // Обработка ошибок
