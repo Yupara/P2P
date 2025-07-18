@@ -6,15 +6,23 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Настройка CORS — пропиши сюда адрес своего фронта!
+const allowedOrigins = [
+  'https://p-production-c7cd.up.railway.app', // твой фронт
+  'http://localhost:3000',                    // для локальной разработки
+];
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Пример базового роута для проверки работы сервера
-app.get('/', (req, res) => {
+// Пример тестового роута — фронт будет делать сюда запрос
+app.get('/api/hello', (req, res) => {
   res.json({ message: 'Backend работает!' });
 });
 
