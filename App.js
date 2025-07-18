@@ -9,7 +9,7 @@ const app = express();
 // Настройка CORS — пропиши сюда адрес своего фронта!
 const allowedOrigins = [
   'https://p-production-c7cd.up.railway.app', // твой фронт
-  'http://localhost:3000',                    // для локальной разработки
+  'http://localhost:80',                    // для локальной разработки
 ];
 app.use(cors({
   origin: allowedOrigins,
