@@ -1,33 +1,38 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+import React, { useEffect, useState } from "react";
 
-const app = express();
+const apiUrl = process.env.REACT_APP_API_URL || "https://your-backend.onrender.com";
 
-// Middleware
-app.use(cors());
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+function App() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+  
+  useEffect(() => {
+    fetch(`${apiUrl}/api/hello`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Ошибка запроса к бэкенду");
+        return res.json();
+      })
+      .then((data) => setData(data))
+      .catch((e) => setError(e.message));
+  }, []);
 
-// Пример базового роута для проверки работы сервера
-app.get('/', (req, res) => {
-  res.json({ message: 'Backend работает!' });
-});
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#112d13",
+      color: "#eaffda",
+      fontFamily: "Roboto, Arial, sans-serif",
+      padding: "2rem"
+    }}>
+      <h1>P2P Exchange Frontend</h1>
+      <p>Пробуем запрос к бэкенду:</p>
+      {error && <div style={{ color: "#ff4d4d" }}>Ошибка: {error}</div>}
+      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+      <footer style={{ marginTop: "3rem", color: "#6ee2b5" }}>
+        Powered by P2P
+      </footer>
+    </div>
+  );
+}
 
-// Обработка ошибок
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Ошибка сервера!" });
-});
-
-// Запуск сервера
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
-
-module.exports = app;
+export default App;
