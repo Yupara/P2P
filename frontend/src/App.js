@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const apiUrl = process.env.REACT_APP_API_URL || "https://your-backend.onrender.com";
+const apiUrl = process.env.REACT_APP_API_URL || "p2p-production-e097.up.railway.app";
 
 function App() {
   const [data, setData] = useState(null);
